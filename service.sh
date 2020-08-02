@@ -67,6 +67,24 @@ write() {
     echo "[*] $1: $curval --> $2"
 }
 
+# Print device information prior to execution
+echo "[*] ----- Device Information -----"
+# Kernel and device information
+uname -a
+
+# Scheduler feature check
+[[ -f "/sys/kernel/debug/sched_features" ]] && echo "[*] Scheduler features exposed."
+
+# CPU boost check
+[[ -d "/sys/module/cpu_boost" ]] && echo "[*] CAF CPU boost detected."
+
+# Stune check
+[[ -d "/dev/stune" ]] && echo "[*] Schedtune is available."
+
+# ZRAM support state
+[[ -d "/sys/block/zram0" ]] && echo "[*] ZRAM supported."
+echo "[*] ------------------------------"
+
 # Wait 60s into boot before applying changes
 echo "[*] Waiting for 60s of uptime."
 while [[ `cat /proc/uptime | awk '{print $1}' | awk -F. '{print $1}'` -lt 60 ]]

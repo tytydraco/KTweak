@@ -185,7 +185,7 @@ done
 if [[ -d "/sys/block/zram0" ]]
 then
     memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-    halfmemsize=`echo "$memsize/2" | bc`
+    halfmemsize=`echo "$(($memsize/2))"`
 
     swapoff /dev/block/zram0
     write /sys/block/zram0/reset 1

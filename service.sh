@@ -112,7 +112,7 @@ ctl vm.dirty_writeback_centisecs 0
 ctl vm.extfrag_threshold 750
 ctl vm.oom_dump_tasks 0
 ctl vm.overcommit_memory 1
-ctl vm.page-cluster 5
+ctl vm.page-cluster 0
 ctl vm.reap_mem_on_sigkill 1
 ctl vm.stat_interval 10
 ctl vm.swappiness 50

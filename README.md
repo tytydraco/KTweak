@@ -124,8 +124,8 @@ Do not dump debug information when (or if) we run out of memory. If we have a lo
 ### vm.overcommit_memory: 0 --> 1
 Always guarentee processes that memory is available for their allocations without checking. This can lead to applications requesting more memory than they need, but it increases performance for RAM-intensive processes.
 
-### vm.page-cluster: 3 --> 5
-When reading from swap (in most cases, ZRAM), read ahead 32 pages instead of 8 pages. On a 4 KiB page size system (>99% of Android devices as of 2020), this is 128 KiB worth of data. By reading more from ZRAM at any given read, we reduce the amount of independant decompressions we need to do.
+### vm.page-cluster: 3 --> 0
+Disable reading additional pages from the swap device (in most cases, ZRAM). This is the same philosophy as disabling readahead.
 
 ### vm.reap_mem_on_sigkill: 0 --> 1
 When we kill a task, clean its memory footprint to free up whatever amount of RAM it was consuming.

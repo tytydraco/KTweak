@@ -67,6 +67,18 @@ write() {
 	echo "[*] $1: $curval --> $2"
 }
 
+# Setup ZRAM to half of the available RAM
+setup_zram() {
+    memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
+    halfmemsize=`echo "$(($memsize/2))"`
+
+    swapoff /dev/block/zram0
+    write /sys/block/zram0/reset 1
+    write /sys/block/zram0/disksize "${halfmemsize}KB"
+    mkswap /dev/block/zram0
+    swapon /dev/block/zram0
+}
+
 # Print device information prior to execution
 echo "[*] ----- Device Information -----"
 # Kernel and device information
@@ -197,16 +209,6 @@ do
 done
 
 # ZRAM
-if [[ -d "/sys/block/zram0" ]]
-then
-    memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-    halfmemsize=`echo "$(($memsize/2))"`
-
-    swapoff /dev/block/zram0
-    write /sys/block/zram0/reset 1
-    write /sys/block/zram0/disksize "${halfmemsize}KB"
-    mkswap /dev/block/zram0
-    swapon /dev/block/zram0
-fi
+[[ -d "/sys/block/zram0" ]] && setup_zram &
 
 echo "[*] Done."

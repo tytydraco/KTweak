@@ -105,8 +105,8 @@ ctl net.ipv4.tcp_syncookies 0
 ctl net.ipv4.tcp_timestamps 0
 
 # VM
-ctl vm.dirty_background_ratio 10
-ctl vm.dirty_ratio 50
+ctl vm.dirty_background_ratio 3
+ctl vm.dirty_ratio 30
 ctl vm.dirty_expire_centisecs 1000
 ctl vm.dirty_writeback_centisecs 0
 ctl vm.extfrag_threshold 750

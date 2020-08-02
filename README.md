@@ -103,11 +103,11 @@ This tunable, when enabled, prevents denial of service attacks by allowing conne
 RedHat claims that TCP timestamps may cause performance spikes due to time accounting code on high-performance connections. Disable it.
 See RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/7/html/tuning_guide/reduce_tcp_performance_spikes
 
-### vm.dirty_background_ratio: 5 --> 10
-Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 10% memory dirtied. At 5%, we may start writing back data too early, causing I/O spikes for proceeding requests.
+### vm.dirty_background_ratio: 5 --> 3
+Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 3% memory dirtied. It's better to start background writeback early to avoid hitting the dirty_ratio point in general.
 
-### vm.dirty_ratio: 20 --> 50
-This tunable is the same as the former, but it is the ceiling for **synchronous** dirty writeback, meaning all I/O will stall until all dirty pages are written out to the disk. We usually won't need to worry about hitting this value, as the background writeback can catch up before we reach 20% memory dirtied. But as a precaution (i.e. heavy file transfers), increase this value to a 50% ceiling to prevent visible system stalls.
+### vm.dirty_ratio: 20 --> 30
+This tunable is the same as the former, but it is the ceiling for **synchronous** dirty writeback, meaning all I/O will stall until all dirty pages are written out to the disk. We usually won't need to worry about hitting this value, as the background writeback can catch up before we reach 20% memory dirtied. But as a precaution (i.e. heavy file transfers), increase this value to a 30% ceiling to prevent visible system stalls. We are sacrificing available memory in exchange for a reduced change of a brief system stall.
 
 ### vm.dirty_expire_centisecs: 300 (3s) --> 1000 (10s)
 This is the longest that dirty pages can remain in the system before they are forcefully written out to the disk. By increasing this value, we can allow the dirty background writeback to take its time asynchronously, and avoid unnecessary writebacks that can clog the flusher thread.

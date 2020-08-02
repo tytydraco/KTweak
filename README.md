@@ -121,9 +121,6 @@ Compact memory more often, even if the memory allocation was estimated to be due
 ### vm.oom_dump_tasks: 1 --> 0
 Do not dump debug information when (or if) we run out of memory. If we have a lot of tasks running, and are OOMing often, then this overhead can add up.
 
-### vm.overcommit_memory: 0 --> 1
-Always guarentee processes that memory is available for their allocations without checking. This can lead to applications requesting more memory than they need, but it increases performance for RAM-intensive processes.
-
 ### vm.page-cluster: 3 --> 0
 Disable reading additional pages from the swap device (in most cases, ZRAM). This is the same philosophy as disabling readahead.
 

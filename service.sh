@@ -115,7 +115,7 @@ ctl vm.overcommit_memory 1
 ctl vm.page-cluster 0
 ctl vm.reap_mem_on_sigkill 1
 ctl vm.stat_interval 10
-ctl vm.swappiness 50
+ctl vm.swappiness 80
 ctl vm.vfs_cache_pressure 200
 ctl vm.watermark_scale_factor 100
 

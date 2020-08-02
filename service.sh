@@ -54,7 +54,7 @@ write() {
 	fi
 
 	# Write the new value
-	echo "$2" > "$1" &> /dev/null
+	echo "$2" > "$1"
 
 	# Bail out if write fails
 	if [[ $? -ne 0 ]]

@@ -175,10 +175,8 @@ do
     write "${queue}iostats" 0
     write "${queue}read_ahead_kb" 0
     write "${queue}nr_requests" 512
-
-    avail_scheds=`cat "${queue}scheduler"`
-    [[ "$avail_scheds" == *"noop"* ]] && write "${queue}scheduler" noop
-    [[ "$avail_scheds" == *"none"* ]] && write "${queue}scheduler" none
+    write "${queue}scheduler" noop
+    write "${queue}scheduler" none
 done
 
 # ZRAM

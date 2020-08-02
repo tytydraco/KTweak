@@ -44,7 +44,7 @@ write() {
 	fi
 
 	# Fetch the current key value
-	local curval=`cat "$1"`
+	local curval=`cat "$1" 2> /dev/null`
 
 	# Bail out if value is already set
 	if [[ "$curval" == "$2" ]]

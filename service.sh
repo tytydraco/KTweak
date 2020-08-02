@@ -181,4 +181,17 @@ do
     [[ "$avail_scheds" == *"none"* ]] && write "${queue}scheduler" none
 done
 
+# ZRAM
+if [[ -d "/sys/block/zram0" ]]
+then
+    memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
+    halfmemsize=`echo "$memsize/2" | bc`
+
+    swapoff /dev/block/zram0
+    write /sys/block/zram0/reset 1
+    write /sys/block/zram0/disksize "${halfmemsize}KB"
+    mkswap /dev/block/zram0
+    swapon /dev/block/zram0
+fi
+
 echo "[*] Done."

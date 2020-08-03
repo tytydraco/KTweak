@@ -20,6 +20,29 @@ Unlike other "kernel optimizers", KTweak is:
 * Designed by an experienced kernel developer,
 * Non-intrusive, being completely systemless.
 
+# Benchmarks
+The following benchmarks were performed on a OnePlus 7 Pro running the stock kernel provided by the OEM on Android 10.
+
+### `hackbench -pTl 4000` (lower is better)
+* Without KTweak: ~20-50 seconds on average
+* With KTweak: ~4-6 seconds on average
+
+### `perf bench mem memcpy` (lower is better) (average of 50 iters)
+* Without KTweak: 14.01 ms
+* With KTweak: 10.40 ms
+
+### `synthmark` (voicemark) (higher is better)
+* Without KTweak: 374.94
+* With KTweak: 383.556
+
+### `synthmark` (latencymark little) (lower is better)
+* Without KTweak: 10
+* With KTweak: 10
+
+### `synthmark` (latencymark big) (lower is better)
+* Without KTweak: 12
+* With KTweak: 10
+
 # The Tweaks
 In order to remain genuine, I have commited to explaining each and every kernel tweak that KTweak applies. Grab your coffee, this could take a while.
 

@@ -61,6 +61,9 @@ See scheduling priority documentation: https://man7.org/linux/man-pages/man7/sch
 See autogrouping off: https://www.youtube.com/watch?v=uk70SeGA7pg
 See autogrouping on: https://www.youtube.com/watch?v=prxInRdaNfc
 
+### kernel.sched_enable_thread_grouping: 0 --> 1
+To my knowledge using the limited documentation of this tunable, this is basically autogrouping for thread groups.
+
 ### kernel.sched_child_runs_first: 0 --> 1
 When forking a child process from the parent, execute the child process before the parent process. This usually shaves down some latency on task initializations, since most of the time the child process is doing some form of heavy lifting.
 

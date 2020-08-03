@@ -107,6 +107,7 @@ ctl kernel.perf_cpu_time_max_percent 5
 write /proc/sys/kernel/printk_devkmsg off
 ctl kernel.randomize_va_space 0
 ctl kernel.sched_autogroup_enabled 1
+ctl kernel.sched_enable_thread_grouping 1
 ctl kernel.sched_child_runs_first 1
 ctl kernel.sched_downmigrate "40 40"
 ctl kernel.sched_upmigrate "60 60"

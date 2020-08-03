@@ -14,7 +14,7 @@ Need I go on?
 # What's different about KTweak?
 Unlike other "kernel optimizers", KTweak is:
 
-* Consice, at around 200 lines long,
+* Concice, at around 200 lines long,
 * Entirely open source with no compiled components,
 * Backed by logic and evidence,
 * Designed by an experienced kernel developer,
@@ -47,7 +47,7 @@ The following benchmarks were performed on a OnePlus 7 Pro running the stock ker
 In order to remain genuine, I have commited to explaining each and every kernel tweak that KTweak applies. Grab your coffee, this could take a while.
 
 ### kernel.perf_cpu_time_max_percent: 25 --> 5
-This is the **maximum** CPU time long perf event processing can take as a percentage. If this percentage is exceeded (meaning perf event processing used too much CPU time), the polling rate is throttled. This is reduced from 25% to 5%. We can afford inaccuracies with perf events in exchance for more time that a foreground task can use.
+This is the **maximum** CPU time long perf event processing can take as a percentage. If this percentage is exceeded (meaning perf event processing used too much CPU time), the polling rate is throttled. This is reduced from 25% to 5%. We can afford inaccuracies with perf events in exchange for more time that a foreground task can use.
 
 ### kernel.randomize_va_space: 2 --> 0
 ASLR has been shown to induce additional cache pressure on 32 bit executables, especially those compiled with PIE. It is a security feature, although we may see better memory performance with it disabled.
@@ -114,7 +114,7 @@ Disable the migration of timers among CPUs. Usually, when a timer is created on 
 Enable Explicit Congestion Notification for incoming and outgoing negotiations. This reduces packet losses.
 
 ### net.ipv4.tcp_fastopen: 3
-Enable data transmission during the SACK exchange point in TCP negotiation. This reduces packet latencies. Enable it for senders and recievers.
+Enable data transmission during the SACK exchange point in TCP negotiation. This reduces packet latencies. Enable it for senders and receivers.
 
 ### net.ipv4.tcp_slow_start_after_idle: 1 --> 0
 Do not ramp up TCP speeds after being idle. Turning this off increases persistent connection speeds (i.e. during live video streaming without buffering, or during online gaming).
@@ -127,10 +127,10 @@ RedHat claims that TCP timestamps may cause performance spikes due to time accou
 See RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/7/html/tuning_guide/reduce_tcp_performance_spikes
 
 ### vm.compact_unevictable_allowed: 1 --> 0
-Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aformentioned stalls.
+Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aforementioned stalls.
 
 ### vm.dirty_background_ratio: 5 --> 3
-Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 3% memory dirtied. It's better to start background writeback early to avoid hitting the dirty_ratio point in general.
+Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 3% memory dirtied. It's better to start background writeback early to avoid hitting the dirty_ratio poiaforementioned.
 
 ### vm.dirty_ratio: 20 --> 30
 This tunable is the same as the former, but it is the ceiling for **synchronous** dirty writeback, meaning all I/O will stall until all dirty pages are written out to the disk. We usually won't need to worry about hitting this value, as the background writeback can catch up before we reach 20% memory dirtied. But as a precaution (i.e. heavy file transfers), increase this value to a 30% ceiling to prevent visible system stalls. We are sacrificing available memory in exchange for a reduced change of a brief system stall.
@@ -139,7 +139,7 @@ This tunable is the same as the former, but it is the ceiling for **synchronous*
 This is the longest that dirty pages can remain in the system before they are forcefully written out to the disk. By increasing this value, we can allow the dirty background writeback to take its time asynchronously, and avoid unnecessary writebacks that can clog the flusher thread.
 
 ### vm.dirty_writeback_centisecs: 500 (5s) --> 0 (0s)
-Do not periodically writeback data every 5 seconds. Instead, leave it to the dirty background writeback to wakeup when the dirty memory of the system hits 10%. This allows the dirty pages to stay in memory for longer, possibly increasing cache locality as the page cache is still available in memory.
+Do not periodically writeback data every 5 seconds. Instead, leave it to the dirty background writeback to wake up when the dirty memory of the system hits 10%. This allows the dirty pages to stay in memory for longer, possibly increasing cache locality as the page cache is still available in memory.
 
 ### vm.extfrag_threshold: 500 --> 750
 Compact memory more often, even if the memory allocation was estimated to be due to a low-memory status. This lets us put more data into RAM at the expense of running compation more often. This is a worthy tradeoff, as it reduces memory fragmentation, which is incredibly important for ZRAM.
@@ -157,7 +157,7 @@ When we kill a task, clean its memory footprint to free up whatever amount of RA
 Update /proc/stat information every 10 seconds instead of every second, reducing jitter on loaded systems.
 
 ### vm.swappiness: 100 --> 80
-Swap to ZRAM less often if we don't have to. ZRAM can become expensive due to constant compression and decompression. If we can keep some of the memory uncompressed in regular RAM, we can a avoid that overhead.
+Swap to ZRAM less often if we don't have to. ZRAM can become expensive due to constant compression and decompression. If we can keep some of the memory uncompressed in regular RAM, we can avoid that overhead.
 
 ### vm.vfs_cache_pressure: 100 --> 200
 This tunable controls the kernel's tendency to reclaim inodes and dentries over page cache. Inodes and dentries are information about file metadata and directory structures, while page cache is the actual cached contents of a file. By increasing this value to 200, we tell the kernel to prefer claiming inodes and dentries over the page cache, increasing the chance of a cache hit when referencing recently used data, while not polluting the RAM with less-important information.
@@ -172,7 +172,7 @@ GFS gives recently awoken tasks 50% more virtual runtime than existing tasks in 
 By scheduling the last woken task first, we can increase cache locality since that task is likely to touch the same data as before.
 
 ### No Strict Skip Buddy
-Usually, the scheduler will always choose to skip tasks that call `yeild()`. However, these yeilding tasks may be of higher importance than the last or next buddy that are available. Do not always skip the skip buddy if we don't have to.
+Usually, the scheduler will always choose to skip tasks that call `yield()`. However, these yeilding tasks may be of higher importance than the last or next buddy that are available. Do not always skip the skip buddy if we don't have to.
 
 ### No Nontask Capacity
 The scheduler decrements the perceived CPU capacity that longer the CPU has been idle for. This means that an idle CPU may be skipped during task placement, and a task can be grouped with a busier CPU. Disable this to improve task start latency.
@@ -191,7 +191,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
 * readahead: 0: Disable readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.
-* nr_requests: 128 --> 512: Allow more I/O requests to be issued before flushing the queue, slighly increasing latencies but allowing more requests to be executed before being put to sleep.
+* nr_requests: 128 --> 512: Allow more I/O requests to be issued before flushing the queue, slightly increasing latencies but allowing more requests to be executed before being put to sleep.
 * noop / none: Use a scheduler with little CPU overhead to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
 ### ZRAM

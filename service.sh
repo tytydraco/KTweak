@@ -90,9 +90,6 @@ uname -a
 # CPU boost check
 [[ -d "/sys/module/cpu_boost" ]] && echo "[*] CAF CPU boost detected."
 
-# Stune check
-[[ -d "/dev/stune" ]] && echo "[*] Schedtune is available."
-
 # ZRAM support state
 [[ -d "/sys/block/zram0" ]] && echo "[*] ZRAM supported."
 echo "[*] ------------------------------"
@@ -190,12 +187,6 @@ if [[ -d "/sys/module/cpu_boost" ]]
 then
 	write "/sys/module/cpu_boost/parameters/input_boost_freq" 1200000
 	write "/sys/module/cpu_boost/parameters/input_boost_ms" 250
-fi
-
-# Stune
-if [[ -d "/dev/stune" ]]
-then
-	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi
 
 # I/O

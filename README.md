@@ -162,9 +162,6 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * input_boost_freq: 1.2 GHz (closest freq) as a generic, universal boost frequency.
 * input_boost_ms: 250 ms, not consuming too much power but boosting for important, interactive events such as clicking on things.
 
-### Schedtune
-* top-app: schedtune.prefer_idle: 0 --> 1: Request new tasks be placed on the most idle CPU available to reduce startup latencies. This may consume more power than usual.
-
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
 * readahead: 0: Disable readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.

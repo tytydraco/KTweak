@@ -49,9 +49,6 @@ In order to remain genuine, I have commited to explaining each and every kernel 
 ### kernel.perf_cpu_time_max_percent: 25 --> 5
 This is the **maximum** CPU time long perf event processing can take as a percentage. If this percentage is exceeded (meaning perf event processing used too much CPU time), the polling rate is throttled. This is reduced from 25% to 5%. We can afford inaccuracies with perf events in exchance for more time that a foreground task can use.
 
-### printk_devkmsg: ratelimit --> off
-All logging brings *some* amount of overhead. Some kernel drivers (i.e. touchscreen, fingerprint, MDSS, DRM) absolutely love logging their useless messages. For each kernel message, /dev/kmsg is written to, which can add up over time and consume a bit of CPU time. It is disabled.
-
 ### kernel.randomize_va_space: 2 --> 0
 ASLR has been shown to induce additional cache pressure on 32 bit executables, especially those compiled with PIE. It is a security feature, although we may see better memory performance with it disabled.
 

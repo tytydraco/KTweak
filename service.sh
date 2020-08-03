@@ -132,6 +132,7 @@ ctl net.ipv4.tcp_syncookies 0
 ctl net.ipv4.tcp_timestamps 0
 
 # VM
+ctl vm.compact_unevictable_allowed 0
 ctl vm.dirty_background_ratio 3
 ctl vm.dirty_ratio 30
 ctl vm.dirty_expire_centisecs 1000

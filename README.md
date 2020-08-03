@@ -126,6 +126,9 @@ This tunable, when enabled, prevents denial of service attacks by allowing conne
 RedHat claims that TCP timestamps may cause performance spikes due to time accounting code on high-performance connections. Disable it.
 See RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/7/html/tuning_guide/reduce_tcp_performance_spikes
 
+### vm.compact_unevictable_allowed: 1 --> 0
+Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aformentioned stalls.
+
 ### vm.dirty_background_ratio: 5 --> 3
 Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 3% memory dirtied. It's better to start background writeback early to avoid hitting the dirty_ratio point in general.
 

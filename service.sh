@@ -29,9 +29,6 @@ ctl() {
 		echo "[!] Failed to write $2 to $1. Skipping."
 		return 1
 	fi
-
-	# Print new state
-	echo "[*] $1: $curval --> $2"
 }
 
 # Safely write value to file
@@ -62,9 +59,6 @@ write() {
 		echo "[!] Failed to write $2 to $1. Skipping."
 		return 1
 	fi
-
-	# Print new state
-	echo "[*] $1: $curval --> $2"
 }
 
 # Setup ZRAM to half of the available RAM

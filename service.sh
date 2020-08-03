@@ -169,6 +169,7 @@ do
 	# Interactive-specific tweaks
 	if [[ -d "${cpu}interactive" ]]
 	then
+		write "${cpu}interactive/min_sample_time" 10000
 		write "${cpu}interactive/go_hispeed_load" 80
 		write "${cpu}interactive/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	fi
@@ -176,8 +177,8 @@ do
 	# Schedutil-specific tweaks
 	if [[ -d "${cpu}schedutil" ]]
 	then
-		write "${cpu}schedutil/up_rate_limit_us" 0
-		write "${cpu}schedutil/down_rate_limit_us" 0
+		write "${cpu}schedutil/up_rate_limit_us" 10000
+		write "${cpu}schedutil/down_rate_limit_us" 10000
 		write "${cpu}schedutil/hispeed_load" 80 
 		write "${cpu}schedutil/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	fi

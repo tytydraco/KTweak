@@ -129,8 +129,8 @@ See RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_lin
 ### vm.compact_unevictable_allowed: 1 --> 0
 Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aforementioned stalls.
 
-### vm.dirty_background_ratio: 5 --> 3
-Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 3% memory dirtied. It's better to start background writeback early to avoid hitting the dirty_ratio poiaforementioned.
+### vm.dirty_background_ratio: 5 --> 10
+Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 10% memory dirtied instead of 5%. Writing dirty pages back too early can be inefficient and overutilize the storage device.
 
 ### vm.dirty_ratio: 20 --> 30
 This tunable is the same as the former, but it is the ceiling for **synchronous** dirty writeback, meaning all I/O will stall until all dirty pages are written out to the disk. We usually won't need to worry about hitting this value, as the background writeback can catch up before we reach 20% memory dirtied. But as a precaution (i.e. heavy file transfers), increase this value to a 30% ceiling to prevent visible system stalls. We are sacrificing available memory in exchange for a reduced change of a brief system stall.

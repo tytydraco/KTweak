@@ -1,6 +1,18 @@
 #!/system/bin/sh
 # Written by Draco (tytydraco @ GitHub)
 
+# Log in red and exit
+err() {
+	[[ "$SILENT" -eq 1 ]] && return 0
+	echo -e "\e[91m[!] $@\e[39m"
+}
+
+# Log in white and continue (unnecessary)
+dbg() {
+	[[ "$SILENT" -eq 1 ]] && return 0
+	[[ "$DEBUG" -eq 1 ]] && echo -e "[*] $@"
+}
+
 # Safely apply sysctl adjustment
 ctl() {
 	# Fetch the current key value
@@ -9,14 +21,14 @@ ctl() {
 	# Bail out if sysctl key does not exist
 	if [[ -z "$curval" ]]
 	then
-		echo "[!] Key $1 does not exist. Skipping."
+		err "Key $1 does not exist. Skipping."
 		return 1
 	fi
 
 	# Bail out if sysctl is already set
 	if [[ "$curval" == "$2" ]]
 	then
-		echo "[*] Key $1 is already set to $2. Skipping."
+		dbg "Key $1 is already set to $2. Skipping."
 		return 0
 	fi
 
@@ -26,7 +38,7 @@ ctl() {
 	# Bail out if write fails
 	if [[ $? -ne 0 ]]
 	then
-		echo "[!] Failed to write $2 to $1. Skipping."
+		err "Failed to write $2 to $1. Skipping."
 		return 1
 	fi
 }
@@ -36,7 +48,7 @@ write() {
 	# Bail out if file does not exist
 	if [[ ! -f "$1" ]]
 	then
-		echo "[!] File $1 does not exist. Skipping."
+		err "File $1 does not exist. Skipping."
 		return 1
 	fi
 
@@ -46,7 +58,7 @@ write() {
 	# Bail out if value is already set
 	if [[ "$curval" == "$2" ]]
 	then
-		echo "[*] File $1 is already set to $2. Skipping."
+		dbg "File $1 is already set to $2. Skipping."
 		return 0
 	fi
 
@@ -56,7 +68,7 @@ write() {
 	# Bail out if write fails
 	if [[ $? -ne 0 ]]
 	then
-		echo "[!] Failed to write $2 to $1. Skipping."
+		err "Failed to write $2 to $1. Skipping."
 		return 1
 	fi
 }
@@ -73,20 +85,45 @@ setup_zram() {
     swapon /dev/block/zram0
 }
 
+usage() {
+	echo -n "Usage: `basename $0` [OPTIONS] [NAME]
+Options:
+  -d			Show debug logs
+  -s			Silence all output, including warnings and errors
+  -h			Show usage
+"
+}
+
+while getopts ":ds" opt; do
+	case $opt in
+		d)
+			DEBUG=1
+			;;
+		s)
+			SILENT=1
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
 # Print device information prior to execution
-echo "[*] ----- Device Information -----"
+dbg "----- Device Information -----"
 # Kernel and device information
-uname -a
+dbg `uname -a`
 
 # Scheduler feature check
-[[ -f "/sys/kernel/debug/sched_features" ]] && echo "[*] Scheduler features exposed."
+[[ -f "/sys/kernel/debug/sched_features" ]] && dbg "Scheduler features exposed."
 
 # CPU boost check
-[[ -d "/sys/module/cpu_boost" ]] && echo "[*] CAF CPU boost detected."
+[[ -d "/sys/module/cpu_boost" ]] && dbg "CAF CPU boost detected."
 
 # ZRAM support state
-[[ -d "/sys/block/zram0" ]] && echo "[*] ZRAM supported."
-echo "[*] ------------------------------"
+[[ -d "/sys/block/zram0" ]] && dbg "ZRAM supported."
+dbg "------------------------------"
 
 # Kernel
 ctl kernel.perf_cpu_time_max_percent 5
@@ -190,4 +227,4 @@ done
 # ZRAM
 [[ -d "/sys/block/zram0" ]] && setup_zram &
 
-echo "[*] Done."
+dbg "Done."

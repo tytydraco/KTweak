@@ -1,4 +1,4 @@
-# CONTRIBUTING
+# Contributing
 KTweak is open to external collaboration, suggestions, and ideas. In order to effectively contribute to the project, ensure you follow the guidelines below before suggesting a change.
 
 # Pull Requests

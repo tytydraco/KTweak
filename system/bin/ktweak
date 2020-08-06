@@ -149,7 +149,6 @@ ctl kernel.sched_migration_cost_ns 1000000
 ctl kernel.sched_min_task_util_for_boost 40
 ctl kernel.sched_min_task_util_for_colocation 20
 ctl kernel.sched_nr_migrate 64
-ctl kernel.sched_rt_runtime_us 1000000
 ctl kernel.sched_schedstats 0
 ctl kernel.sched_wakeup_granularity_ns 5000000
 ctl kernel.timer_migration 0

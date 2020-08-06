@@ -95,9 +95,6 @@ When perfd triggers a sched_boost, consider migrating the task to a higher-perfo
 ### kernel.sched_nr_migrate: 32 --> 64
 When migrating tasks between CPUs, allow the scheduler to migrate twice as many as usual. This should increase scheduling latency marginally, but increase the performance of SCHED_OTHER tasks.
 
-### kernel.sched_rt_runtime_us: 950000 --> 1000000
-Allow realtime tasks to consume the entirety of the scheduling period. While this may lead to CPU deadlocks if a rouge task is stuck in a loop, it can offer an additional 5% performance gain to realtime tasks.
-
 ### kernel.sched_schedstats: 1 --> 0
 Disable scheduler statistics accounting. This is just for debugging, but it adds overhead.
 

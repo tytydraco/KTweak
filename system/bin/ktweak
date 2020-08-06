@@ -229,6 +229,6 @@ do
 done
 
 # ZRAM
-[[ -d "/sys/block/zram0" ]] && setup_zram &
+[[ -d "/sys/block/zram0" ]] && setup_zram &> /dev/null &
 
 dbg "Finished with $ERR_CNT failed writes."

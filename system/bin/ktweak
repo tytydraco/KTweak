@@ -177,7 +177,6 @@ ctl vm.vfs_cache_pressure 200
 # Scheduler features
 if [[ -f "/sys/kernel/debug/sched_features" ]]
 then
-	write /sys/kernel/debug/sched_features NO_GENTLE_FAIR_SLEEPERS
 	write /sys/kernel/debug/sched_features NEXT_BUDDY
 	write /sys/kernel/debug/sched_features NO_STRICT_SKIP_BUDDY
 	write /sys/kernel/debug/sched_features NO_NONTASK_CAPACITY

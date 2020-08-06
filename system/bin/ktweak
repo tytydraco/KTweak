@@ -110,6 +110,13 @@ while getopts ":ds" opt; do
 done
 shift $((OPTIND-1))
 
+# Wait for boot to finish completely
+dbg "Sleeping until boot completes."
+while [[ `getprop sys.boot_completed` -ne 1 ]]
+do
+       sleep 1
+done
+
 # Print device information prior to execution
 dbg "----- Device Information -----"
 # Kernel and device information

@@ -94,10 +94,14 @@ Options:
 "
 }
 
-while getopts ":d" opt; do
+while getopts ":dh" opt; do
 	case $opt in
 		d)
 			DEBUG=1
+			;;
+		h)
+			usage
+			exit 0
 			;;
 		*)
 			usage

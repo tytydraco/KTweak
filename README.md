@@ -162,9 +162,6 @@ Swap to ZRAM less often if we don't have to. ZRAM can become expensive due to co
 ### vm.vfs_cache_pressure: 100 --> 200
 This tunable controls the kernel's tendency to reclaim inodes and dentries over page cache. Inodes and dentries are information about file metadata and directory structures, while page cache is the actual cached contents of a file. By increasing this value to 200, we tell the kernel to prefer claiming inodes and dentries over the page cache, increasing the chance of a cache hit when referencing recently used data, while not polluting the RAM with less-important information.
 
-### vm.watermark_scale_factor: 10 --> 100
-Wake up kswapd to compact memory more often. This should help prevent LMK or LMKD from needlessly killing tasks if the cause of the low-memory condition happens to be fragmentation.
-
 ### Disabling Gentle Fair Sleepers
 GFS gives recently awoken tasks 50% more virtual runtime than existing tasks in order to catch up with the rest of the system. While this makes sense, it also takes time away from already running tasks. Disabling GFS can improve jitter and it may improve throughput of high-performance tasks.
 

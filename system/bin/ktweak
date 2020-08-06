@@ -6,13 +6,11 @@ ERR_CNT=0
 # Log in red and exit
 err() {
 	ERR_CNT=$(($ERR_CNT + 1))
-	[[ "$SILENT" -eq 1 ]] && return 0
 	[[ "$DEBUG" -eq 1 ]] && echo -e "\e[91m[!] $@\e[39m"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	[[ "$SILENT" -eq 1 ]] && return 0
 	[[ "$DEBUG" -eq 1 ]] && echo -e "[*] $@"
 }
 
@@ -92,18 +90,14 @@ usage() {
 	echo -n "Usage: `basename $0` [OPTIONS] [NAME]
 Options:
   -d			Show debug logs
-  -s			Silence all output, including warnings and errors
   -h			Show usage
 "
 }
 
-while getopts ":ds" opt; do
+while getopts ":d" opt; do
 	case $opt in
 		d)
 			DEBUG=1
-			;;
-		s)
-			SILENT=1
 			;;
 		*)
 			usage

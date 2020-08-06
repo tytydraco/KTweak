@@ -191,7 +191,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
 * readahead: 0: Disable readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.
-* nr_requests: 128 --> 512: Allow more I/O requests to be issued before flushing the queue, slightly increasing latencies but allowing more requests to be executed before being put to sleep.
+* nr_requests: 128 --> 64: Since flash storage is relatively fast, we can reduce latencies by decreasing the maximum number of requests that can be sent out at once.
 * noop / none: Use a scheduler with little CPU overhead to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
 ### ZRAM

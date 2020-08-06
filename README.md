@@ -2,7 +2,7 @@
 A no-nonsense kernel tweak script for Android devices, backed with evidence.
 
 # Another "kernel optimizer"?
-No. Well, yes. However, a "kernel optimizer" is a poor way to put it. KTweak performs kernel adjustments based on facts and evidence. Unlike other optimizers with poorly written or heavily obfuscated code. For example:
+No. Well, yes. However, a "kernel optimizer" is a poor way to put it. KTweak performs kernel adjustments based on facts and evidence, unlike other optimizers with poorly written or heavily obfuscated code. For example:
 
 * [LSpeed](https://github.com/Magisk-Modules-Grave/lspeed/blob/master/system/etc/lspeed/binary/main_function#L3896) is almost 4000 lines long; completely unnecessary.
 * [NFS Injector](https://github.com/Magisk-Modules-Grave/nfsinjector/tree/master/system/etc/nfs/arm) uses compiled binaries that are closed source... yuck. Not to mention the typos in the README. This one is hard to look at.

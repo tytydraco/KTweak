@@ -1,8 +1,11 @@
 #!/system/bin/sh
 # Written by Draco (tytydraco @ GitHub)
 
+ERR_CNT=0
+
 # Log in red and exit
 err() {
+	ERR_CNT=$(($ERR_CNT + 1))
 	[[ "$SILENT" -eq 1 ]] && return 0
 	echo -e "\e[91m[!] $@\e[39m"
 }
@@ -234,4 +237,4 @@ done
 # ZRAM
 [[ -d "/sys/block/zram0" ]] && setup_zram &
 
-dbg "Done."
+dbg "Finished with $ERR_CNT failed writes."

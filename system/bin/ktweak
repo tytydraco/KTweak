@@ -156,7 +156,6 @@ ctl kernel.timer_migration 0
 # Net
 ctl net.ipv4.tcp_ecn 1
 ctl net.ipv4.tcp_fastopen 3
-ctl net.ipv4.tcp_slow_start_after_idle 0
 ctl net.ipv4.tcp_syncookies 0
 ctl net.ipv4.tcp_timestamps 0
 

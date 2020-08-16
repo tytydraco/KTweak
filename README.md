@@ -110,9 +110,6 @@ Enable Explicit Congestion Notification for incoming and outgoing negotiations. 
 ### net.ipv4.tcp_fastopen: 3
 Enable data transmission during the SACK exchange point in TCP negotiation. This reduces packet latencies. Enable it for senders and receivers.
 
-### net.ipv4.tcp_slow_start_after_idle: 1 --> 0
-Do not ramp up TCP speeds after being idle. Turning this off increases persistent connection speeds (i.e. during live video streaming without buffering, or during online gaming).
-
 ### net.ipv4.tcp_syncookies: 1 --> 0
 This tunable, when enabled, prevents denial of service attacks by allowing connection ACKs to be tracked. However, this is more-or-less unnecessary for a mobile device. It is more applicable for servers. Disable it.
 

@@ -14,7 +14,7 @@ Need I go on?
 # What's different about KTweak?
 Unlike other "kernel optimizers", KTweak is:
 
-* Concice, at around 200 lines long,
+* Concise, at around 200 lines long,
 * Entirely open source with no compiled components,
 * Backed by logic and evidence,
 * Designed by an experienced kernel developer,

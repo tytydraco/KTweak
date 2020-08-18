@@ -113,10 +113,6 @@ Enable data transmission during the SACK exchange point in TCP negotiation. This
 ### net.ipv4.tcp_syncookies: 1 --> 0
 This tunable, when enabled, prevents denial of service attacks by allowing connection ACKs to be tracked. However, this is more-or-less unnecessary for a mobile device. It is more applicable for servers. Disable it.
 
-### net.ipv4.tcp_timestamps: 1 --> 0
-RedHat claims that TCP timestamps may cause performance spikes due to time accounting code on high-performance connections. Disable it.
-See RedHat: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_for_real_time/7/html/tuning_guide/reduce_tcp_performance_spikes
-
 ### vm.compact_unevictable_allowed: 1 --> 0
 Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aforementioned stalls.
 

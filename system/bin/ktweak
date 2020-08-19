@@ -169,7 +169,7 @@ ctl vm.oom_dump_tasks 0
 ctl vm.page-cluster 0
 ctl vm.reap_mem_on_sigkill 1
 ctl vm.stat_interval 10
-ctl vm.swappiness 80
+ctl vm.swappiness 60
 ctl vm.vfs_cache_pressure 200
 
 # Scheduler features

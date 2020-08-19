@@ -143,7 +143,7 @@ When we kill a task, clean its memory footprint to free up whatever amount of RA
 ### vm.stat_interval: 1 --> 10
 Update /proc/stat information every 10 seconds instead of every second, reducing jitter on loaded systems.
 
-### vm.swappiness: 100 --> 80
+### vm.swappiness: 100 --> 60
 Swap to ZRAM less often if we don't have to. ZRAM can become expensive due to constant compression and decompression. If we can keep some of the memory uncompressed in regular RAM, we can avoid that overhead.
 
 ### vm.vfs_cache_pressure: 100 --> 200

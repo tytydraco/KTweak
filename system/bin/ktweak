@@ -138,9 +138,9 @@ ctl kernel.perf_cpu_time_max_percent 5
 ctl kernel.sched_autogroup_enabled 1
 ctl kernel.sched_enable_thread_grouping 1
 ctl kernel.sched_child_runs_first 1
-ctl kernel.sched_downmigrate "20 20"
+ctl kernel.sched_downmigrate "50 50"
 ctl kernel.sched_upmigrate "80 80"
-ctl kernel.sched_group_downmigrate 20
+ctl kernel.sched_group_downmigrate 50
 ctl kernel.sched_group_upmigrate 80
 ctl kernel.sched_tunable_scaling 0
 ctl kernel.sched_latency_ns 10000000

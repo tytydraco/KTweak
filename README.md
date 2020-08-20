@@ -179,7 +179,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 ZRAM reduces disk wear by reducing disk writes, and also increases cache locality by allowing more data to fit in RAM at once. KTweak configures ZRAM to take up at most half of the available RAM on the system, which is a good ratio of RAM to ZRAM for a mobile device.
 
 # Other Notes
-You should know that KTweak applies after 60s of uptime as to prevent Android's init from overwriting any values.
+You should know that KTweak applies after init finishes + 20 seconds in order to prevent Android's init from overwriting any values.
 
 # Contact
 You can find me on telegram at @tytydraco.

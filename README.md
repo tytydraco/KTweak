@@ -143,8 +143,8 @@ When we kill a task, clean its memory footprint to free up whatever amount of RA
 ### vm.stat_interval: 1 --> 10
 Update /proc/stat information every 10 seconds instead of every second, reducing jitter on loaded systems.
 
-### vm.swappiness: 100 --> 60
-Swap to ZRAM less often if we don't have to. ZRAM can become expensive due to constant compression and decompression. If we can keep some of the memory uncompressed in regular RAM, we can avoid that overhead.
+### vm.swappiness: 100
+This is the default on many recent devices, but legacy devices may still be using 60. Swap to ZRAM at a fair rate.
 
 ### vm.vfs_cache_pressure: 100 --> 200
 This tunable controls the kernel's tendency to reclaim inodes and dentries over page cache. Inodes and dentries are information about file metadata and directory structures, while page cache is the actual cached contents of a file. By increasing this value to 200, we tell the kernel to prefer claiming inodes and dentries over the page cache, increasing the chance of a cache hit when referencing recently used data, while not polluting the RAM with less-important information.

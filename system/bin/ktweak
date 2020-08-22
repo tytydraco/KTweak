@@ -152,7 +152,7 @@ ctl vm.compact_unevictable_allowed 0
 ctl vm.dirty_background_ratio 10
 ctl vm.dirty_ratio 30
 ctl vm.dirty_expire_centisecs 1000
-ctl vm.dirty_writeback_centisecs 1000
+ctl vm.dirty_writeback_centisecs 0
 ctl vm.extfrag_threshold 750
 ctl vm.oom_dump_tasks 0
 ctl vm.page-cluster 0

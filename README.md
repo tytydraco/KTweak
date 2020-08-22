@@ -175,9 +175,6 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * nr_requests: 128 --> 512: Allow more I/O requests to be issued before flushing the queue, slightly increasing latencies but allowing more requests to be executed before being put to sleep.
 * noop / none: Use a scheduler with little CPU overhead to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
-### ZRAM
-ZRAM reduces disk wear by reducing disk writes, and also increases cache locality by allowing more data to fit in RAM at once. KTweak configures ZRAM to take up at most half of the available RAM on the system, which is a good ratio of RAM to ZRAM for a mobile device.
-
 # Other Notes
 You should know that KTweak applies after init finishes + 20 seconds in order to prevent Android's init from overwriting any values.
 

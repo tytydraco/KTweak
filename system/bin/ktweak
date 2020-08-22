@@ -74,18 +74,6 @@ write() {
 	fi
 }
 
-# Setup ZRAM to half of the available RAM
-setup_zram() {
-    memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-    halfmemsize=`echo "$(($memsize/2))"`
-
-    swapoff /dev/block/zram0
-    write /sys/block/zram0/reset 1
-    write /sys/block/zram0/disksize "${halfmemsize}KB"
-    mkswap /dev/block/zram0
-    swapon /dev/block/zram0
-}
-
 usage() {
 	echo -n "Usage: `basename $0` [OPTIONS] [NAME]
 Options:
@@ -218,8 +206,5 @@ do
 	write "${queue}scheduler" noop
 	write "${queue}scheduler" none
 done
-
-# ZRAM
-[[ -d "/sys/block/zram0" ]] && setup_zram &> /dev/null &
 
 dbg "Finished with $ERR_CNT failed writes."

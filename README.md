@@ -101,9 +101,6 @@ Disable scheduler statistics accounting. This is just for debugging, but it adds
 ### kernel.sched_wakeup_granularity_ns: 1000000 (1ms) --> 5000000 (5ms)
 Require the current task to be surpassing the new task in vmruntime by 5ms instead of 1ms before preemption occurs. This should reduce jitter due to less frequent task interruptions.
 
-### kernel.timer_migration: 1 --> 0
-Disable the migration of timers among CPUs. Usually, when a timer is created on one CPU, it would be able to be migrated to another CPU. However, this increases realtime latencies and scheduling interrupts. It can be turned off.
-
 ### net.ipv4.tcp_ecn: 2 --> 1
 Enable Explicit Congestion Notification for incoming and outgoing negotiations. This reduces packet losses.
 

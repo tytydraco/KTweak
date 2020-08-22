@@ -47,6 +47,8 @@ ctl() {
 		err "Failed to write $2 to $1. Skipping."
 		return 1
 	fi
+
+	dbg "Set $1: $curval --> $2"
 }
 
 # Safely write value to file
@@ -77,6 +79,8 @@ write() {
 		err "Failed to write $2 to $1. Skipping."
 		return 1
 	fi
+
+	dbg "Wrote $1: $curval --> $2"
 }
 
 usage() {

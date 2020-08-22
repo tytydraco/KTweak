@@ -110,9 +110,6 @@ Enable data transmission during the SACK exchange point in TCP negotiation. This
 ### net.ipv4.tcp_syncookies: 1 --> 0
 This tunable, when enabled, prevents denial of service attacks by allowing connection ACKs to be tracked. However, this is more-or-less unnecessary for a mobile device. It is more applicable for servers. Disable it.
 
-### vm.compact_unevictable_allowed: 1 --> 0
-Do not allow compaction of unevictable pages. With this set to 1, more compactions can happen at the cost of small page fault stalls. Turn this off to compact less but avoid aforementioned stalls.
-
 ### vm.dirty_background_ratio: 5 --> 10
 Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 10% memory dirtied instead of 5%. Writing dirty pages back too early can be inefficient and overutilize the storage device.
 

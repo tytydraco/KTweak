@@ -208,7 +208,7 @@ fi
 for queue in /sys/block/*/queue/
 do
 	write "${queue}iostats" 0
-	write "${queue}read_ahead_kb" 0
+	write "${queue}read_ahead_kb" 64
 	write "${queue}nr_requests" 512
 	write "${queue}scheduler" cfq
 	write "${queue}scheduler" kyber

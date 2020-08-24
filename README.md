@@ -65,7 +65,7 @@ When forking a child process from the parent, execute the child process before t
 Do not allow tasks to migrate back down to a lower-power CPU until the estimated CPU utilization would go below 20% on said CPU. This means tasks will stay on higher-performance CPUs for longer than usual.
 
 ### kernel.sched_upmigrate: 80    80
-Similar to the previous tunable, do not allow CPUs to migrate to the higher-performance CPUs unless the utilization goes above 80%.
+Similar to the previous tunable, do not allow tasks to migrate to the higher-performance CPUs unless the utilization goes above 80%.
 
 ### kernel.sched_group_downmigrate: 50
 The same as kernel.sched_downmigrate, except for whole task groups.

@@ -8,8 +8,8 @@ do
        sleep 1
 done
 
-# Sleep an additional 60s to ensure init is finished
-sleep 60
+# Sleep an additional 90s to ensure init is finished
+sleep 90
 
 # Setup tweaks
 ktweak

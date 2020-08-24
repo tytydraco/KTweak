@@ -165,12 +165,12 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
-* readahead: 0: Disable readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.
-* nr_requests: 128 --> 512: Allow more I/O requests to be issued before flushing the queue, slightly increasing latencies but allowing more requests to be executed before being put to sleep.
-* noop / none: Use a scheduler with little CPU overhead to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
+* readahead: 128 --> 64: Reduce readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.
+* nr_requests: 128 --> 64: Reduce I/O latencies slightly by reducing the maximum queue depth.
+* cfq / kyber: Use a scheduler with balanced scheduling to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
 # Other Notes
-You should know that KTweak applies after init finishes + 20 seconds in order to prevent Android's init from overwriting any values.
+You should know that KTweak applies after init finishes + 90 seconds in order to prevent Android's init from overwriting any values.
 
 # Contact
 You can find me on telegram at @tytydraco.

@@ -210,8 +210,8 @@ do
 	write "${queue}iostats" 0
 	write "${queue}read_ahead_kb" 0
 	write "${queue}nr_requests" 512
-	write "${queue}scheduler" noop
-	write "${queue}scheduler" none
+	write "${queue}scheduler" cfq
+	write "${queue}scheduler" kyber
 done
 
 dbg "Finished with $ERR_CNT failed writes."

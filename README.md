@@ -86,11 +86,14 @@ Set the minimum task scheduling period to 1ms. With kernel.sched_latency_ns set 
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.
 See RedHat: https://www.redhat.com/files/summit/session-assets/2018/Performance-analysis-and-tuning-of-Red-Hat-Enterprise-Linux-Part-1.pdf
 
-### kernel.sched_min_task_util_for_boost: 25
-This value effects if tasks should be migrated to a higher performant CPU if it's utilization is above this amount. Allow tasks to be migrated upwards if the user is triggering a touch boost and the task is above 25% utilization.
+### kernel.sched_min_task_util_for_boost: 35
+This value effects if tasks should be migrated to a higher performant CPU if it's utilization is above this amount (during sched_boost). Allow tasks to be migrated upwards if the user is triggering a touch boost and the task is above 35% utilization.
 
-### kernel.sched_min_task_util_for_colocation: 50
-This value is the same as the former, except it occurs when the user is **not** touching the screen. We shouldn't upmigrate tasks if the user isn't actively interacting with them (i.e. video streaming).
+### kernel.sched_min_task_util_for_colocation: 25
+This value is the same as the former, except it occurs only for top-app tasks (which are of greater priority than background tasks). Lower this value a bit to use big clusters more for top-app tasks.
+
+### kernel.sched_min_task_util_for_boost_colocation: 35
+This is the same as kernel.sched_min_task_util_for_boost for older kernel versions.
 
 ### kernel.sched_nr_migrate: 32 --> 64
 When migrating tasks between CPUs, allow the scheduler to migrate twice as many as usual. This should increase scheduling latency marginally, but increase the performance of SCHED_OTHER tasks.

@@ -173,9 +173,6 @@ fi
 # CPU
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
-	write "${cpu}scaling_min_freq" `cat "${cpu}cpuinfo_min_freq"`
-	write "${cpu}scaling_max_freq" `cat "${cpu}cpuinfo_max_freq"`
-
 	avail_govs=`cat "${cpu}scaling_available_governors"`
 	[[ "$avail_govs" == *"interactive"* ]] && write "${cpu}scaling_governor" interactive
 	[[ "$avail_govs" == *"schedutil"* ]] && write "${cpu}scaling_governor" schedutil

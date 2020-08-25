@@ -84,7 +84,7 @@ write() {
 }
 
 usage() {
-	echo -n "Usage: `basename $0` [OPTIONS] [NAME]
+	echo -n "Usage: `basename $0` [OPTIONS]
 Options:
   -d			Show debug logs
   -h			Show usage

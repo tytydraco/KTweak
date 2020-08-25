@@ -91,6 +91,9 @@ Options:
 "
 }
 
+# Check for root permissions
+[[ `id -u` -ne 0 ]] && err "No root permissions. Exiting."
+
 while getopts ":dh" opt; do
 	case $opt in
 		d)

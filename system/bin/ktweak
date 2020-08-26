@@ -50,13 +50,19 @@ _write() {
 
 # Background fork write function
 write() {
-	_write $@ &
+	if [[ "$SYNC" -eq 1 ]]
+	then
+		_write $@
+	else
+		_write $@ &
+	fi
 }
 
 usage() {
 	echo -n "Usage: `basename $0` [OPTIONS]
 Options:
   -d			Show debug logs
+  -s			Synchronous mode
   -h			Show usage
 "
 }
@@ -64,10 +70,13 @@ Options:
 # Check for root permissions
 [[ `id -u` -ne 0 ]] && err "No root permissions. Exiting."
 
-while getopts ":dh" opt; do
+while getopts ":dsh" opt; do
 	case $opt in
 		d)
 			DEBUG=1
+			;;
+		s)
+			SYNC=1
 			;;
 		h)
 			usage

@@ -20,7 +20,7 @@ dbg() {
 }
 
 # Safely write value to file
-write() {
+_write() {
 	# Bail out if file does not exist
 	if [[ ! -f "$1" ]]
 	then
@@ -49,6 +49,11 @@ write() {
 	fi
 
 	dbg "Wrote $1: $curval --> $2"
+}
+
+# Background fork write function
+write() {
+	_write $@ &
 }
 
 usage() {

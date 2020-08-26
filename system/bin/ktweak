@@ -19,38 +19,6 @@ dbg() {
 	[[ "$DEBUG" -eq 1 ]] && echo -e "[*] $@"
 }
 
-# Safely apply sysctl adjustment
-ctl() {
-	# Fetch the current key value
-	local curval=`sysctl -e -n "$1"`
-
-	# Bail out if sysctl key does not exist
-	if [[ -z "$curval" ]]
-	then
-		err "Key $1 does not exist. Skipping."
-		return 1
-	fi
-
-	# Bail out if sysctl is already set
-	if [[ "$curval" == "$2" ]]
-	then
-		dbg "Key $1 is already set to $2. Skipping."
-		return 0
-	fi
-
-	# Set the new value
-	sysctl -w "$1"="$2" &> /dev/null
-
-	# Bail out if write fails
-	if [[ $? -ne 0 ]]
-	then
-		err "Failed to write $2 to $1. Skipping."
-		return 1
-	fi
-
-	dbg "Set $1: $curval --> $2"
-}
-
 # Safely write value to file
 write() {
 	# Bail out if file does not exist
@@ -127,42 +95,42 @@ dbg `uname -a`
 dbg "------------------------------"
 
 # Kernel
-ctl kernel.perf_cpu_time_max_percent 5
-ctl kernel.sched_autogroup_enabled 1
-ctl kernel.sched_enable_thread_grouping 1
-ctl kernel.sched_child_runs_first 1
-ctl kernel.sched_downmigrate "50 50"
-ctl kernel.sched_upmigrate "80 80"
-ctl kernel.sched_group_downmigrate 50
-ctl kernel.sched_group_upmigrate 80
-ctl kernel.sched_tunable_scaling 0
-ctl kernel.sched_latency_ns 10000000
-ctl kernel.sched_min_granularity_ns 1000000
-ctl kernel.sched_migration_cost_ns 1000000
-ctl kernel.sched_min_task_util_for_boost 35
-ctl kernel.sched_min_task_util_for_colocation 25
-ctl kernel.sched_min_task_util_for_boost_colocation 35
-ctl kernel.sched_nr_migrate 64
-ctl kernel.sched_schedstats 0
-ctl kernel.sched_wakeup_granularity_ns 5000000
+write /proc/sys/kernel/perf_cpu_time_max_percent 5
+write /proc/sys/kernel/sched_autogroup_enabled 1
+write /proc/sys/kernel/sched_enable_thread_grouping 1
+write /proc/sys/kernel/sched_child_runs_first 1
+write /proc/sys/kernel/sched_downmigrate "50 50"
+write /proc/sys/kernel/sched_upmigrate "80 80"
+write /proc/sys/kernel/sched_group_downmigrate 50
+write /proc/sys/kernel/sched_group_upmigrate 80
+write /proc/sys/kernel/sched_tunable_scaling 0
+write /proc/sys/kernel/sched_latency_ns 10000000
+write /proc/sys/kernel/sched_min_granularity_ns 1000000
+write /proc/sys/kernel/sched_migration_cost_ns 1000000
+write /proc/sys/kernel/sched_min_task_util_for_boost 35
+write /proc/sys/kernel/sched_min_task_util_for_colocation 25
+write /proc/sys/kernel/sched_min_task_util_for_boost_colocation 35
+write /proc/sys/kernel/sched_nr_migrate 64
+write /proc/sys/kernel/sched_schedstats 0
+write /proc/sys/kernel/sched_wakeup_granularity_ns 5000000
 
 # Net
-ctl net.ipv4.tcp_ecn 1
-ctl net.ipv4.tcp_fastopen 3
-ctl net.ipv4.tcp_syncookies 0
+write /proc/sys/net/ipv4.tcp_ecn 1
+write /proc/sys/net/ipv4.tcp_fastopen 3
+write /proc/sys/net/ipv4.tcp_syncookies 0
 
 # VM
-ctl vm.dirty_background_ratio 10
-ctl vm.dirty_ratio 30
-ctl vm.dirty_expire_centisecs 1000
-ctl vm.dirty_writeback_centisecs 0
-ctl vm.extfrag_threshold 750
-ctl vm.oom_dump_tasks 0
-ctl vm.page-cluster 0
-ctl vm.reap_mem_on_sigkill 1
-ctl vm.stat_interval 10
-ctl vm.swappiness 100
-ctl vm.vfs_cache_pressure 200
+write /proc/sys/vm/dirty_background_ratio 10
+write /proc/sys/vm/dirty_ratio 30
+write /proc/sys/vm/dirty_expire_centisecs 1000
+write /proc/sys/vm/dirty_writeback_centisecs 0
+write /proc/sys/vm/extfrag_threshold 750
+write /proc/sys/vm/oom_dump_tasks 0
+write /proc/sys/vm/page-cluster 0
+write /proc/sys/vm/reap_mem_on_sigkill 1
+write /proc/sys/vm/stat_interval 10
+write /proc/sys/vm/swappiness 100
+write /proc/sys/vm/vfs_cache_pressure 200
 
 # Scheduler features
 if [[ -f "/sys/kernel/debug/sched_features" ]]

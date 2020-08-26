@@ -147,8 +147,8 @@ fi
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
 	avail_govs=`cat "${cpu}scaling_available_governors"`
-	[[ "$avail_govs" == *"interactive"* ]] && write "${cpu}scaling_governor" interactive
-	[[ "$avail_govs" == *"schedutil"* ]] && write "${cpu}scaling_governor" schedutil
+	[[ "$avail_govs" == *"interactive"* ]] && _write "${cpu}scaling_governor" interactive
+	[[ "$avail_govs" == *"schedutil"* ]] && _write "${cpu}scaling_governor" schedutil
 
 	# Interactive-specific tweaks
 	if [[ -d "${cpu}interactive" ]]

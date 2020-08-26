@@ -184,3 +184,5 @@ do
 done
 
 dbg "Finished with $ERR_CNT failed writes."
+
+exit 0

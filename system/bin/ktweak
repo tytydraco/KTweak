@@ -4,7 +4,7 @@
 ERR_CNT=0
 
 # Reset log file
-echo "" > /data/local/tmp/ktweak_log.txt
+rm /data/local/tmp/ktweak_log.txt
 
 # Log in red and exit
 err() {

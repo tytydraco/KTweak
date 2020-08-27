@@ -176,15 +176,7 @@ fi
 # I/O
 for queue in /sys/block/*/queue/
 do
-	avail_scheds=`cat "${queue}scheduler"`
-	for sched in cfq noop kyber none
-	do
-		if [[ "$avail_scheds" == *"$sched"* ]]
-		then
-			_write "${queue}scheduler" "$sched"
-			break
-		fi
-	done
+	_write "${queue}scheduler" cfq
 	write "${queue}iostats" 0
 	write "${queue}read_ahead_kb" 64
 	write "${queue}nr_requests" 64

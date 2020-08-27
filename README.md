@@ -104,15 +104,6 @@ Disable scheduler statistics accounting. This is just for debugging, but it adds
 ### kernel.sched_wakeup_granularity_ns: 1000000 (1ms) --> 10000000 (10ms)
 Require the current task to be surpassing the new task in vmruntime by 10ms instead of 1ms before preemption occurs. In testing, `hackbench -pl 8000` times were reduced by ~94% (NOT a typo).
 
-### net.ipv4.tcp_ecn: 2 --> 1
-Enable Explicit Congestion Notification for incoming and outgoing negotiations. This reduces packet losses.
-
-### net.ipv4.tcp_fastopen: 3
-Enable data transmission during the SACK exchange point in TCP negotiation. This reduces packet latencies. Enable it for senders and receivers.
-
-### net.ipv4.tcp_syncookies: 1 --> 0
-This tunable, when enabled, prevents denial of service attacks by allowing connection ACKs to be tracked. However, this is more-or-less unnecessary for a mobile device. It is more applicable for servers. Disable it.
-
 ### vm.dirty_background_ratio: 5 --> 10
 Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 10% memory dirtied instead of 5%. Writing dirty pages back too early can be inefficient and overutilize the storage device.
 

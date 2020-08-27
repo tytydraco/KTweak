@@ -163,6 +163,7 @@ do
 		write "${cpu}schedutil/hispeed_load" 90 
 		write "${cpu}schedutil/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	elif [[ "$avail_govs" == *"interactive"* ]]
+	then
 		_write "${cpu}scaling_governor" interactive
 		write "${cpu}interactive/min_sample_time" 10000
 		write "${cpu}interactive/go_hispeed_load" 90

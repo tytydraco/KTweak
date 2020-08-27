@@ -95,8 +95,8 @@ This value is the same as the former, except it occurs only for top-app tasks (w
 ### kernel.sched_min_task_util_for_boost_colocation: 35
 This is the same as kernel.sched_min_task_util_for_boost for older kernel versions.
 
-### kernel.sched_nr_migrate: 32 --> 64
-When migrating tasks between CPUs, allow the scheduler to migrate twice as many as usual. This should increase scheduling latency marginally, but increase the performance of SCHED_OTHER tasks.
+### kernel.sched_nr_migrate: 32 --> 128
+When migrating tasks between CPUs, allow the scheduler to migrate twice as many as usual. This should increase scheduling latency marginally, but increase the performance of SCHED_OTHER tasks. In testing, `cyclictest` reported a 2 microsecond increase in average latency, an a **decrease** in maximum latency of SCHED_FIFO tasks.
 
 ### kernel.sched_schedstats: 1 --> 0
 Disable scheduler statistics accounting. This is just for debugging, but it adds overhead.

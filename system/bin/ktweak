@@ -120,7 +120,7 @@ write /proc/sys/kernel/sched_migration_cost_ns 1000000
 write /proc/sys/kernel/sched_min_task_util_for_boost 35
 write /proc/sys/kernel/sched_min_task_util_for_colocation 25
 write /proc/sys/kernel/sched_min_task_util_for_boost_colocation 35
-write /proc/sys/kernel/sched_nr_migrate 64
+write /proc/sys/kernel/sched_nr_migrate 128
 write /proc/sys/kernel/sched_schedstats 0
 write /proc/sys/kernel/sched_wakeup_granularity_ns 5000000
 

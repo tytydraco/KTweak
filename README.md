@@ -79,8 +79,8 @@ This is more of a precaution than anything. Since the next few tunables will be 
 ### kernel.sched_latency_ns: 10000000 (10ms)
 Set the default scheduling period to 10ms. If this value is set too low, the scheduler will switch contexts too often, spending more time internally than executing the waiting tasks.
 
-### kernel.sched_min_granularity_ns: 1000000 (1ms)
-Set the minimum task scheduling period to 1ms. With kernel.sched_latency_ns set to 1ms, this means that 10 tasks may execute within the 10ms scheduling period before we exceed it.
+### kernel.sched_min_granularity_ns: 2500000 (2.5ms)
+Set the minimum task scheduling period to 2.5ms. With kernel.sched_latency_ns set to 2.5ms, this means that 4 active tasks may execute within the 10ms scheduling period before we exceed it. Originally, this value was set to 1ms. After benchmarking using `hackbench -pl 8000`, it was determined that a higher value reduces hackbench times significantly. The tradeoff is scheduling latency.
 
 ### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 1000000 (1ms)
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.

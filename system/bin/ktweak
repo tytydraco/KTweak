@@ -91,7 +91,7 @@ done
 shift $((OPTIND-1))
 
 # Print device information prior to execution
-dbg "----- Device Information -----"
+
 # Kernel and device information
 dbg `uname -a`
 
@@ -103,7 +103,6 @@ dbg `uname -a`
 
 # ZRAM support state
 [[ -d "/sys/block/zram0" ]] && dbg "ZRAM supported."
-dbg "------------------------------"
 
 # Kernel
 write /proc/sys/kernel/perf_cpu_time_max_percent 5

@@ -156,24 +156,18 @@ fi
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
 	avail_govs=`cat "${cpu}scaling_available_governors"`
-	[[ "$avail_govs" == *"interactive"* ]] && _write "${cpu}scaling_governor" interactive
-	[[ "$avail_govs" == *"schedutil"* ]] && _write "${cpu}scaling_governor" schedutil
-
-	# Interactive-specific tweaks
-	if [[ -d "${cpu}interactive" ]]
+	if [[ "$avail_govs" == *"schedutil"* ]]
 	then
-		write "${cpu}interactive/min_sample_time" 10000
-		write "${cpu}interactive/go_hispeed_load" 90
-		write "${cpu}interactive/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
-	fi
-
-	# Schedutil-specific tweaks
-	if [[ -d "${cpu}schedutil" ]]
-	then
+		_write "${cpu}scaling_governor" schedutil
 		write "${cpu}schedutil/up_rate_limit_us" 10000
 		write "${cpu}schedutil/down_rate_limit_us" 10000
 		write "${cpu}schedutil/hispeed_load" 90 
 		write "${cpu}schedutil/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
+	elif [[ "$avail_govs" == *"interactive"* ]]
+		_write "${cpu}scaling_governor" interactive
+		write "${cpu}interactive/min_sample_time" 10000
+		write "${cpu}interactive/go_hispeed_load" 90
+		write "${cpu}interactive/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	fi
 done
 

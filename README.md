@@ -61,13 +61,13 @@ To my knowledge using the limited documentation of this tunable, this is basical
 ### kernel.sched_child_runs_first: 0 --> 1
 When forking a child process from the parent, execute the child process before the parent process. This usually shaves down some latency on task initializations, since most of the time the child process is doing some form of heavy lifting.
 
-### kernel.sched_downmigrate: 50    50
-Do not allow tasks to migrate back down to a lower-power CPU until the estimated CPU utilization would go below 20% on said CPU. This means tasks will stay on higher-performance CPUs for longer than usual.
+### kernel.sched_downmigrate: 80    80
+Do not allow tasks to migrate back down to a lower-power CPU until the estimated CPU utilization would go below 80% on said CPU. This means tasks will stay on higher-performance CPUs for longer than usual.
 
 ### kernel.sched_upmigrate: 80    80
 Similar to the previous tunable, do not allow tasks to migrate to the higher-performance CPUs unless the utilization goes above 80%.
 
-### kernel.sched_group_downmigrate: 50
+### kernel.sched_group_downmigrate: 80
 The same as kernel.sched_downmigrate, except for whole task groups.
 
 ### kernel.sched_group_upmigrate: 80

@@ -101,8 +101,8 @@ When migrating tasks between CPUs, allow the scheduler to migrate twice as many 
 ### kernel.sched_schedstats: 1 --> 0
 Disable scheduler statistics accounting. This is just for debugging, but it adds overhead.
 
-### kernel.sched_wakeup_granularity_ns: 1000000 (1ms) --> 5000000 (5ms)
-Require the current task to be surpassing the new task in vmruntime by 5ms instead of 1ms before preemption occurs. This should reduce jitter due to less frequent task interruptions.
+### kernel.sched_wakeup_granularity_ns: 1000000 (1ms) --> 10000000 (10ms)
+Require the current task to be surpassing the new task in vmruntime by 10ms instead of 1ms before preemption occurs. In testing, `hackbench -pl 8000` times were reduced by ~94% (NOT a typo).
 
 ### net.ipv4.tcp_ecn: 2 --> 1
 Enable Explicit Congestion Notification for incoming and outgoing negotiations. This reduces packet losses.

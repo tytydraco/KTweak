@@ -191,4 +191,6 @@ do
 	write "${queue}nr_requests" 64
 done
 
+dbg "Done."
+
 exit 0

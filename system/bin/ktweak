@@ -178,7 +178,7 @@ fi
 for queue in /sys/block/*/queue/
 do
 	avail_scheds=`cat "${queue}scheduler"`
-	for sched in cfq noop kyber none
+	for sched in cfq noop kyber bfq mq-deadline none
 	do
 		if [[ "$avail_scheds" == *"$sched"* ]]
 		then

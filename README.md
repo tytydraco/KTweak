@@ -110,9 +110,6 @@ This is the longest that dirty pages can remain in the system before they are fo
 ### vm.dirty_writeback_centisecs: 500 (5s) --> 0 (0s)
 Do not periodically writeback data every 5 seconds. Instead, leave it to the dirty background writeback to wake up when the dirty memory of the system hits 10%. This allows the dirty pages to stay in memory for longer, possibly increasing cache locality as the page cache is still available in memory.
 
-### vm.extfrag_threshold: 500 --> 750
-Compact memory more often, even if the memory allocation was estimated to be due to a low-memory status. This lets us put more data into RAM at the expense of running compation more often. This is a worthy tradeoff, as it reduces memory fragmentation, which is incredibly important for ZRAM.
-
 ### vm.oom_dump_tasks: 1 --> 0
 Do not dump debug information when (or if) we run out of memory. If we have a lot of tasks running, and are OOMing often, then this overhead can add up.
 

@@ -127,7 +127,6 @@ write /proc/sys/vm/dirty_background_ratio 10
 write /proc/sys/vm/dirty_ratio 30
 write /proc/sys/vm/dirty_expire_centisecs 1000
 write /proc/sys/vm/dirty_writeback_centisecs 0
-write /proc/sys/vm/extfrag_threshold 750
 write /proc/sys/vm/oom_dump_tasks 0
 write /proc/sys/vm/page-cluster 0
 write /proc/sys/vm/reap_mem_on_sigkill 1

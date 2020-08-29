@@ -156,7 +156,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * cfq / kyber: Use a scheduler with balanced scheduling to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
 # Other Notes
-You should know that KTweak applies after init finishes + 90 seconds in order to prevent Android's init from overwriting any values.
+You should know that KTweak applies after init finishes + android mounts + 10 seconds in order to prevent Android's init from overwriting any values.
 
 # Contact
 You can find me on telegram at @tytydraco.

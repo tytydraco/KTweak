@@ -122,8 +122,8 @@ Update /proc/stat information every 10 seconds instead of every second, reducing
 ### vm.swappiness: 100
 This is the default on many recent devices, but legacy devices may still be using 60. Swap to ZRAM at a fair rate.
 
-### vm.vfs_cache_pressure: 100 --> 200
-This tunable controls the kernel's tendency to reclaim inodes and dentries over page cache. Inodes and dentries are information about file metadata and directory structures, while page cache is the actual cached contents of a file. By increasing this value to 200, we tell the kernel to prefer claiming inodes and dentries over the page cache, increasing the chance of a cache hit when referencing recently used data, while not polluting the RAM with less-important information.
+### vm.vfs_cache_pressure: 100 --> 60
+This tunable controls the kernel's tendency to reclaim inodes and dentries over page cache. Inodes and dentries are information about file metadata and directory structures, while page cache is the actual cached contents of a file. By reducing this value, we can cache file structure information for improved performance.
 
 ### Next Buddy
 By scheduling the last woken task first, we can increase cache locality since that task is likely to touch the same data as before.

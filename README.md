@@ -107,8 +107,8 @@ This tunable is the same as the former, but it is the ceiling for **synchronous*
 ### vm.dirty_expire_centisecs: 300 (3s) --> 1000 (10s)
 This is the longest that dirty pages can remain in the system before they are forcefully written out to the disk. By increasing this value, we can allow the dirty background writeback to take its time asynchronously, and avoid unnecessary writebacks that can clog the flusher thread.
 
-### vm.dirty_writeback_centisecs: 500 (5s) --> 0 (0s)
-Do not periodically writeback data every 5 seconds. Instead, leave it to the dirty background writeback to wake up when the dirty memory of the system hits 10%. This allows the dirty pages to stay in memory for longer, possibly increasing cache locality as the page cache is still available in memory.
+### vm.dirty_writeback_centisecs: 500 (5s) --> 0 (10s)
+Do background writeback via flusher threads less often to reduce occasional overhead.
 
 ### vm.oom_dump_tasks: 1 --> 0
 Do not dump debug information when (or if) we run out of memory. If we have a lot of tasks running, and are OOMing often, then this overhead can add up.

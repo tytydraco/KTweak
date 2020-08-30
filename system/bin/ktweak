@@ -188,12 +188,4 @@ do
 	write "${queue}nr_requests" 64
 done
 
-# Delay completion message
-if [[ "$SYNC" -ne 1 ]]
-then
-	(sleep 5; dbg "Done.") &
-else
-	dbg "Done."
-fi
-
 exit 0

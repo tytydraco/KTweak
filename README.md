@@ -131,7 +131,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * hispeed_freq: <max>: Set the "higher freq" (referencing hispeed_load) to the maximum frequency available to take advantage of [Race-To-Idle](https://lwn.net/Articles/281629/).
 
 ### CAF CPU Boost Tweaks
-* input_boost_freq: 1.4 GHz (closest freq) as a generic, universal boost frequency to the little cluster.
+* input_boost_freq: 1.2 GHz (closest freq) as a generic, universal boost frequency to the little cluster.
 * input_boost_ms: 250 ms, not consuming too much power but boosting for important, interactive events such as clicking on things.
 
 ### I/O

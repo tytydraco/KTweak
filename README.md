@@ -130,10 +130,6 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * hispeed_load / go_hispeed_load: 90 --> 80: Jump to a higher frequency if we are approaching the end of the frequency list, where a task may begin to starve or begin to stutter.
 * hispeed_freq: <max>: Set the "higher freq" (referencing hispeed_load) to the maximum frequency available to take advantage of [Race-To-Idle](https://lwn.net/Articles/281629/).
 
-### CAF CPU Boost Tweaks
-* input_boost_freq: 1.2 GHz (closest freq) as a generic, universal boost frequency to the little cluster.
-* input_boost_ms: 250 ms, not consuming too much power but boosting for important, interactive events such as clicking on things.
-
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
 * readahead: 128 --> 64: Reduce readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.

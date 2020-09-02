@@ -162,7 +162,7 @@ done
 # CAF CPU boost
 if [[ -d "/sys/module/cpu_boost" ]]
 then
-	write "/sys/module/cpu_boost/parameters/input_boost_freq" 0:1400000
+	write "/sys/module/cpu_boost/parameters/input_boost_freq" 0:1600000
 	write "/sys/module/cpu_boost/parameters/input_boost_ms" 250
 fi
 

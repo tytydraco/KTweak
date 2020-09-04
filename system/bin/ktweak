@@ -152,10 +152,14 @@ do
 		write "${cpu}schedutil/up_rate_limit_us" 10000
 		write "${cpu}schedutil/down_rate_limit_us" 10000
 		write "${cpu}schedutil/rate_limit_us" 10000
+		write "${cpu}schedutil/hispeed_load" 80 
+		write "${cpu}schedutil/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	elif [[ "$avail_govs" == *"interactive"* ]]
 	then
 		_write "${cpu}scaling_governor" interactive
 		write "${cpu}interactive/min_sample_time" 10000
+		write "${cpu}interactive/go_hispeed_load" 80
+		write "${cpu}interactive/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
 	fi
 done
 

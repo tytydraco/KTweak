@@ -142,7 +142,7 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 
 ### I/O
 * iostats: 1 --> 0: Disable I/O statistics accounting, which adds overhead.
-* readahead: 128 --> 64: Reduce readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time.
+* readahead: 128 --> 0: Reduce readahead, which is intended for disks with long seek times (HDD), whereas mobile devices use flash storage with zero seek time. In testing, this improves IOPS by up to 4% for reads and 2% for random reads and random writes.
 * nr_requests: 128 --> 64: Reduce I/O latencies slightly by reducing the maximum queue depth.
 * cfq / kyber: Use a scheduler with balanced scheduling to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 

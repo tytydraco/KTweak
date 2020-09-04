@@ -172,7 +172,7 @@ do
 		fi
 	done
 	write "${queue}iostats" 0
-	write "${queue}read_ahead_kb" 64
+	write "${queue}read_ahead_kb" 0
 	write "${queue}nr_requests" 64
 done
 

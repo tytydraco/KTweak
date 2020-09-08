@@ -7,13 +7,13 @@ rm /data/local/tmp/ktweak_log.txt
 # Log in red and exit
 err() {
 	echo -e "[!] $@" >> /data/local/tmp/ktweak_log.txt
-	[[ "$DEBUG" -eq 1 ]] && echo -e "\e[91m[!] $@\e[39m"
+	echo -e "\e[91m[!] $@\e[39m"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
 	echo -e "[*] $@" >> /data/local/tmp/ktweak_log.txt
-	[[ "$DEBUG" -eq 1 ]] && echo -e "[*] $@"
+	echo -e "[*] $@"
 }
 
 # Safely write value to file
@@ -74,11 +74,8 @@ then
 	exit 1
 fi
 
-while getopts ":dsh" opt; do
+while getopts ":sh" opt; do
 	case $opt in
-		d)
-			DEBUG=1
-			;;
 		s)
 			SYNC=1
 			;;

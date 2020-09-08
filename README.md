@@ -64,11 +64,14 @@ When forking a child process from the parent, execute the child process before t
 ### kernel.sched_tunable_scaling: 0
 This is more of a precaution than anything. Since the next few tunables will be scheduler timing related, we don't want the scheduler to scale our values for multiple CPUs, as we will be providing CPU-agnostic values.
 
-### kernel.sched_latency_ns: 10000000 (10ms)
-Set the default scheduling period to 10ms. If this value is set too low, the scheduler will switch contexts too often, spending more time internally than executing the waiting tasks.
+### kernel.sched_latency_ns: 5000000 (5ms)
+Set the default scheduling period to 5ms. Reduce the maximum scheduling period to reduce overall scheduling latency.
 
-### kernel.sched_min_granularity_ns: 2500000 (2.5ms)
-Set the minimum task scheduling period to 2.5ms. With kernel.sched_latency_ns set to 2.5ms, this means that 4 active tasks may execute within the 10ms scheduling period before we exceed it. Originally, this value was set to 1ms. After benchmarking using `hackbench -pl 8000`, it was determined that a higher value reduces hackbench times significantly. The tradeoff is scheduling latency.
+### kernel.sched_min_granularity_ns: 500000 (0.5ms)
+Set the minimum task scheduling period to 0.5ms. With kernel.sched_latency_ns set to 5ms, this means that 10 active tasks may execute within the 10ms scheduling period before we exceed it.
+
+### kernel.sched_wakeup_granularity_ns: 2500000 (2.5ms)
+Require the current task to be surpassing the new task in vmruntime by 2.5ms instead of 1ms before preemption occurs. In testing, `hackbench -pl 8000` times were reduced by ~94% (NOT a typo). This increases wakeup preemption latency slightly but results in more consistent scheduling latency.
 
 ### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 1000000 (1ms)
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.
@@ -82,9 +85,6 @@ When migrating tasks between CPUs, allow the scheduler to migrate twice as many 
 
 ### kernel.sched_schedstats: 1 --> 0
 Disable scheduler statistics accounting. This is just for debugging, but it adds overhead.
-
-### kernel.sched_wakeup_granularity_ns: 1000000 (1ms) --> 10000000 (10ms)
-Require the current task to be surpassing the new task in vmruntime by 10ms instead of 1ms before preemption occurs. In testing, `hackbench -pl 8000` times were reduced by ~94% (NOT a typo).
 
 ### vm.dirty_background_ratio: 5 --> 10
 Start writing back dirty pages (pages that have been modified but not yet written to the disk) asynchronously at 10% memory dirtied instead of 5%. Writing dirty pages back too early can be inefficient and overutilize the storage device.

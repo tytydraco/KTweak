@@ -110,13 +110,13 @@ write /proc/sys/kernel/sched_autogroup_enabled 1
 write /proc/sys/kernel/sched_enable_thread_grouping 1
 write /proc/sys/kernel/sched_child_runs_first 1
 write /proc/sys/kernel/sched_tunable_scaling 0
-write /proc/sys/kernel/sched_latency_ns 10000000
-write /proc/sys/kernel/sched_min_granularity_ns 2500000
+write /proc/sys/kernel/sched_latency_ns 5000000
+write /proc/sys/kernel/sched_min_granularity_ns 500000
+write /proc/sys/kernel/sched_wakeup_granularity_ns 2500000
 write /proc/sys/kernel/sched_migration_cost_ns 1000000
 write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 write /proc/sys/kernel/sched_nr_migrate 128
 write /proc/sys/kernel/sched_schedstats 0
-write /proc/sys/kernel/sched_wakeup_granularity_ns 10000000
 
 # VM
 write /proc/sys/vm/dirty_background_ratio 10
@@ -133,8 +133,6 @@ write /proc/sys/vm/vfs_cache_pressure 60
 if [[ -f "/sys/kernel/debug/sched_features" ]]
 then
 	write /sys/kernel/debug/sched_features NEXT_BUDDY
-	write /sys/kernel/debug/sched_features NO_STRICT_SKIP_BUDDY
-	write /sys/kernel/debug/sched_features NO_NONTASK_CAPACITY
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
 fi
 

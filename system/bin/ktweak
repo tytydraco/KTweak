@@ -1,19 +1,14 @@
 #!/system/bin/sh
 # Written by Draco (tytydraco @ GitHub)
 
-# Reset log file
-rm /data/local/tmp/ktweak_log.txt
-
 # Log in red and exit
 err() {
-	echo -e "[!] $@" >> /data/local/tmp/ktweak_log.txt
-	[[ "$DEBUG" -eq 1 ]] && echo -e "\e[91m[!] $@\e[39m"
+	echo -e "\e[91m[!] $@\e[39m"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	echo -e "[*] $@" >> /data/local/tmp/ktweak_log.txt
-	[[ "$DEBUG" -eq 1 ]] && echo -e "[*] $@"
+	echo -e "[*] $@"
 }
 
 # Safely write value to file
@@ -36,7 +31,7 @@ _write() {
 	fi
 
 	# Write the new value
-	echo "$2" > "$1"
+	echo "$2" > "$1" 2> /dev/null
 
 	# Bail out if write fails
 	if [[ $? -ne 0 ]]
@@ -85,20 +80,20 @@ setup_zram() {
 usage() {
 	echo -n "Usage: `basename $0` [OPTIONS]
 Options:
-  -d			Show debug logs
   -s			Synchronous mode
   -h			Show usage
 "
 }
 
 # Check for root permissions
-[[ `id -u` -ne 0 ]] && err "No root permissions. Exiting."
+if [[ `id -u` -ne 0 ]]
+then
+	err "No root permissions. Exiting."
+	exit 1
+fi
 
-while getopts ":dsh" opt; do
+while getopts ":sh" opt; do
 	case $opt in
-		d)
-			DEBUG=1
-			;;
 		s)
 			SYNC=1
 			;;

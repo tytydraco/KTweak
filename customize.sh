@@ -5,5 +5,5 @@ ui_print "[*] Setting executable permissions..."
 set_perm_recursive "$MODPATH/system/bin" root root 0777 0755
 
 # Do install-time script execution
+ui_print "[*] Executing during live boot..."
 sh "$MODPATH/system/bin/ktweak"
-echo "[*] Executed service script during live boot. Reboot is not needed."

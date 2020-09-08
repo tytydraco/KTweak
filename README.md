@@ -70,8 +70,8 @@ Set the default scheduling period to 5ms. Reduce the maximum scheduling period t
 ### kernel.sched_min_granularity_ns: 500000 (0.5ms)
 Set the minimum task scheduling period to 0.5ms. With kernel.sched_latency_ns set to 5ms, this means that 10 active tasks may execute within the 10ms scheduling period before we exceed it.
 
-### kernel.sched_wakeup_granularity_ns: 2500000 (2.5ms)
-Require the current task to be surpassing the new task in vmruntime by 2.5ms instead of 1ms before preemption occurs. In testing, `hackbench -pl 8000` times were reduced by ~94% (NOT a typo). This increases wakeup preemption latency slightly but results in more consistent scheduling latency.
+### kernel.sched_wakeup_granularity_ns: 1000000 (1ms)
+Require tasks to be running for at least 1ms longer than the waiting task before preemption can happen. Reducing this value to 1ms reduces wakeup preemption latencies by up to 50% at a 50th percentile and around 10% for higher percentiles. Hackbench scores suffer if this value is reduced too low.
 
 ### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 1000000 (1ms)
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.

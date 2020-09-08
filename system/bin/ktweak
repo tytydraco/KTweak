@@ -1,18 +1,20 @@
 #!/system/bin/sh
 # Written by Draco (tytydraco @ GitHub)
 
+LOG_FILE="/data/local/tmp/ktweak_log.txt"
+
 # Reset log file
-rm /data/local/tmp/ktweak_log.txt
+rm "$LOG_FILE"
 
 # Log in red and exit
 err() {
-	echo -e "[!] $@" >> /data/local/tmp/ktweak_log.txt
+	echo -e "[!] $@" >> "$LOG_FILE"
 	echo -e "\e[91m[!] $@\e[39m"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	echo -e "[*] $@" >> /data/local/tmp/ktweak_log.txt
+	echo -e "[*] $@" >> "$LOG_FILE"
 	echo -e "[*] $@"
 }
 
@@ -61,7 +63,6 @@ write() {
 usage() {
 	echo -n "Usage: `basename $0` [OPTIONS]
 Options:
-  -d			Show debug logs
   -s			Synchronous mode
   -h			Show usage
 "

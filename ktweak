@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/usr/bin/env bash
 # Written by Draco (tytydraco @ GitHub)
 
 # Log in red and exit

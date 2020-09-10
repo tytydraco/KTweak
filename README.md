@@ -1,6 +1,9 @@
 # ktweak
 A no-nonsense kernel tweak script for Android devices, backed with evidence.
 
+# Magisk Module
+The Magisk Module portion of this script is located in the `magisk-module` branch.
+
 # Another "kernel optimizer"?
 No. Well, yes. However, a "kernel optimizer" is a poor way to put it. KTweak performs kernel adjustments based on facts and evidence, unlike other optimizers with poorly written or heavily obfuscated code. For example:
 

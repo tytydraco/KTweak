@@ -98,7 +98,7 @@ This tunable is the same as the former, but it is the ceiling for **synchronous*
 ### vm.dirty_expire_centisecs: 300 (3s) --> 1000 (10s)
 This is the longest that dirty pages can remain in the system before they are forcefully written out to the disk. By increasing this value, we can allow the dirty background writeback to take its time asynchronously, and avoid unnecessary writebacks that can clog the flusher thread.
 
-### vm.dirty_writeback_centisecs: 500 (5s) --> 1000 (10s)
+### vm.dirty_writeback_centisecs: 500 (5s) --> 3000 (30s)
 Do background writeback via flusher threads less often to reduce occasional overhead.
 
 ### vm.page-cluster: 3 --> 0

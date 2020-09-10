@@ -129,7 +129,7 @@ The scheduler decrements the perceived CPU capacity that longer the CPU has been
 Allow the scheduler to place tasks on their origin CPU, increasing cache locality if the CPU is non-local (i.e. a cache hit would definitely have been missed).
 
 ### Governor Tweaks
-* {up_,down_}rate_limit_us / min_sample_time: 0 --> 10000: Only adjust frequencies once per scheduling cycle to reduce jitter or stutter caused by unrealistic frequency scaling.
+* {up_,down_}rate_limit_us / min_sample_time: 0 --> 5000: Only adjust frequencies once per scheduling cycle to reduce jitter or stutter caused by unrealistic frequency scaling.
 * hispeed_load / go_hispeed_load: 90 --> 80: Jump to a higher frequency if we are approaching the end of the frequency list, where a task may begin to starve or begin to stutter.
 * hispeed_freq: <max>: Set the "higher freq" (referencing hispeed_load) to the maximum frequency available to take advantage of [Race-To-Idle](https://lwn.net/Articles/281629/).
 

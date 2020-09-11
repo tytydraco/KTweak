@@ -79,8 +79,8 @@ setup_zram() {
 			fi
 		done
 
-		mkswap "$device"
-		swapon "$device"
+		mkswap "$device" > /dev/null
+		swapon "$device" > /dev/null
 	done
 }
 

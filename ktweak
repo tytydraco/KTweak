@@ -59,6 +59,7 @@ setup_zram() {
 	halfmemsize=`echo "$(($memsize/2))"`
 	device=`find /dev -name "zram0"`
 
+	modprobe zram &> /dev/null
 	swapoff "$device"
 	_write /sys/block/zram0/reset 1
 	_write /sys/block/zram0/disksize "${halfmemsize}KB"

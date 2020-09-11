@@ -55,28 +55,31 @@ write() {
 
 # Setup ZRAM to half of the available RAM (sync)
 setup_zram() {
-	memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-	halfmemsize=`echo "$(($memsize/2))"`
-	device=`find /dev -name "zram0"`
+	local memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
+	local halfmemsize=`echo "$(($memsize/2))"`
 
 	modprobe zram &> /dev/null
-	swapoff "$device"
-	_write /sys/block/zram0/reset 1
-	_write /sys/block/zram0/disksize "${halfmemsize}KB"
 
-	avail_algs=`cat /sys/block/zram0/comp_algorithm`
-	for alg in lz4 zstd lzo deflate
+	for device in `find /dev -name "zram*"`
 	do
-		if [[ "$avail_algs" == *"$alg"* ]]
-		then
-			_write "${queue}scheduler" "$alg"
-			break
-		fi
-	
-	done
+		local identifier=`echo "$device" | awk -F / '{ print $NF }'`
+		swapoff "$device"
+		_write "/sys/block/$identifier/reset" 1
+		_write "/sys/block/$identifier/disksize" "${halfmemsize}KB"
 
-	mkswap "$device"
-	swapon "$device"
+		local avail_algs=`cat /sys/block/zram0/comp_algorithm`
+		for alg in lz4 zstd lzo deflate
+		do
+			if [[ "$avail_algs" == *"$alg"* ]]
+			then
+				_write "/sys/block/$identifier/comp_algorithm" "$alg"
+				break
+			fi
+		done
+
+		mkswap "$device"
+		swapon "$device"
+	done
 }
 
 usage() {

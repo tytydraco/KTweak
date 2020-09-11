@@ -199,6 +199,6 @@ do
 done
 
 # ZRAM
-[[ -d "/sys/block/zram0" ]] && setup_zram &> /dev/null &
+[[ -d "/sys/block/zram0" ]] && setup_zram &
 
 exit 0

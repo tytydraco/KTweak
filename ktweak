@@ -24,11 +24,7 @@ _write() {
 	local curval=`cat "$1" 2> /dev/null`
 
 	# Bail out if value is already set
-	if [[ "$curval" == "$2" ]]
-	then
-		dbg "File $1 is already set to $2. Skipping."
-		return 0
-	fi
+	[[ "$curval" == "$2" ]] && return 0
 
 	# Write the new value
 	echo "$2" > "$1" 2> /dev/null
@@ -56,16 +52,22 @@ write() {
 # Setup ZRAM to half of the available RAM (sync)
 setup_zram() {
 	local memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-	local halfmemsize=`echo "$(($memsize/2))"`
+	local halfmemsize="$(($memsize/2))"
 
 	modprobe zram &> /dev/null
 
-	for device in `find /dev -name "zram*"`
+	local devices=`find /dev -name "zram*"`
+	local devices_cnt=`echo "$devices" | wc -l`
+	local per_device_size="$(($halfmemsize/$devices_cnt))"
+
+	dbg "Allocating $per_device_size KB of ZRAM for $devices_cnt device(s)"
+
+	for device in $devices
 	do
 		local identifier=`echo "$device" | awk -F / '{ print $NF }'`
 		swapoff "$device"
 		_write "/sys/block/$identifier/reset" 1
-		_write "/sys/block/$identifier/disksize" "${halfmemsize}KB"
+		_write "/sys/block/$identifier/disksize" "${per_device_size}KB"
 
 		local avail_algs=`cat /sys/block/zram0/comp_algorithm`
 		for alg in lz4 zstd lzo deflate

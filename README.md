@@ -1,5 +1,5 @@
 # ktweak
-A no-nonsense kernel tweak script for Linux and Android systems, backed with evidence.
+A no-nonsense kernel tweak script for Linux and Android systems, backed by evidence.
 
 # Magisk Module
 The Magisk Module portion of this script is located in the `magisk-module` branch.

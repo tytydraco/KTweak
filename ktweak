@@ -66,8 +66,7 @@ setup_zram() {
 	do
 		local identifier=`echo "$device" | awk -F / '{ print $NF }'`
 		swapoff "$device"
-		_write "/sys/block/$identifier/reset" 1
-		_write "/sys/block/$identifier/disksize" "${per_device_size}KB"
+		_write "/sys/block/$identifier/reset" 1	
 
 		local avail_algs=`cat /sys/block/zram0/comp_algorithm`
 		for alg in lz4 zstd lzo deflate
@@ -78,6 +77,8 @@ setup_zram() {
 				break
 			fi
 		done
+
+		_write "/sys/block/$identifier/disksize" "${per_device_size}KB"
 
 		mkswap "$device" > /dev/null
 		swapon "$device" > /dev/null

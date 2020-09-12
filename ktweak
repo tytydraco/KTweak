@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Written by Draco (tytydraco @ GitHub)
 
-# Log in red and exit
+# Log in red
 err() {
 	echo -e "\e[91m[!] $@\e[39m"
 }

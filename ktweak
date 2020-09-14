@@ -45,39 +45,6 @@ write() {
 	fi
 }
 
-# Setup ZRAM to half of the available RAM (sync)
-setup_zram() {
-	local memsize=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
-	local halfmemsize="$(($memsize/2))"
-
-	modprobe zram &> /dev/null	
-
-	for device in `find /dev -name "zram*"`
-	do
-		local identifier=`echo "$device" | awk -F / '{ print $NF }'`
-		swapoff "$device"
-		_write "/sys/block/$identifier/reset" 1
-		dbg "Disabled ZRAM for $identifier"
-	done
-
-	local avail_algs=`cat /sys/block/zram0/comp_algorithm`
-	for alg in lz4 zstd lzo deflate
-	do
-		if [[ "$avail_algs" == *"$alg"* ]]
-		then
-			_write "/sys/block/zram0/comp_algorithm" "$alg"
-			break
-		fi
-	done
-
-	_write "/sys/block/zram0/disksize" "${halfmemsize}KB"
-
-	local zram0_dev=`find /dev -name "zram0"`
-	mkswap "$zram0_dev" > /dev/null
-	swapon "$zram0_dev" > /dev/null
-	dbg "Configured $halfsizemem KB of ZRAM for zram0"
-}
-
 usage() {
 	echo -n "Usage: `basename $0` [OPTIONS]
 Options:
@@ -120,9 +87,6 @@ dbg `uname -a`
 
 # CPU boost check
 [[ -d "/sys/module/cpu_boost" ]] && dbg "CAF CPU boost detected."
-
-# ZRAM support state
-[[ -d "/sys/block/zram0" ]] && dbg "ZRAM supported."
 
 # Kernel
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
@@ -193,8 +157,5 @@ do
 	write "${queue}read_ahead_kb" 64
 	write "${queue}nr_requests" 64
 done
-
-# ZRAM
-[[ -d "/sys/block/zram0" ]] && setup_zram &
 
 exit 0

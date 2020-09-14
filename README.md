@@ -139,9 +139,6 @@ Allow the scheduler to place tasks on their origin CPU, increasing cache localit
 * nr_requests: 128 --> 64: Reduce I/O latencies slightly by reducing the maximum queue depth.
 * cfq / kyber: Use a scheduler with balanced scheduling to reduce I/O latencies, which is essential for fast flash storage (eMMC & UFS).
 
-### ZRAM
-ZRAM reduces disk wear by reducing disk writes, and also increases cache locality by allowing more data to fit in RAM at once. KTweak configures ZRAM to take up at most half of the available RAM on the system, which is a good ratio of RAM to ZRAM for a mobile device.
-
 # Other Notes
 You should know that on Android devices, KTweak applies after init finishes + Android mounts + 120 seconds in order to prevent Android's init from overwriting any values.
 

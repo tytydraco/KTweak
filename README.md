@@ -145,3 +145,5 @@ You should know that on Android devices, KTweak applies after init finishes + An
 # Contact
 You can find me on telegram at @tytydraco.
 Feel free to email me at tylernij@gmail.com.
+
+Join the releases channel at @ktweak, or the discussion channel at @ktweak_discussion.

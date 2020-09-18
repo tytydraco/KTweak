@@ -3,12 +3,17 @@
 
 # Log in red
 err() {
-	echo -e "\e[91m[!] $@\e[39m"
+	echo -e " \e[91m*\e[39m $@"
+}
+
+# Log in orange
+warn() {
+	echo -e " \e[93m*\e[39m $@"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	echo -e "[*] $@"
+	echo -e " \e[92m*\e[39m $@"
 }
 
 # Safely write value to file
@@ -22,7 +27,7 @@ _write() {
 	# Bail out if value is already set
 	if [[ "$curval" == "$2" ]]
 	then
-		dbg "File $1 is already set to $2. Skipping."
+		warn "Skipping write $1: $curval → $2"
 		return 0
 	fi
 
@@ -32,11 +37,11 @@ _write() {
 	# Bail out if write fails
 	if [[ $? -ne 0 ]]
 	then
-		err "Failed to write $2 to $1. Skipping."
+		err "Failed to write $1: $curval → $2"
 		return 1
 	fi
 
-	dbg "Wrote $1: $curval --> $2"
+	dbg "Successfully wrote $1: $curval → $2"
 }
 
 # Background fork write function
@@ -79,18 +84,7 @@ while getopts ":sh" opt; do
 			;;
 	esac
 done
-shift $((OPTIND-1))
-
-# Print device information prior to execution
-
-# Kernel and device information
-dbg `uname -a`
-
-# Scheduler feature check
-[[ -f "/sys/kernel/debug/sched_features" ]] && dbg "Scheduler features exposed."
-
-# CPU boost check
-[[ -d "/sys/module/cpu_boost" ]] && dbg "CAF CPU boost detected."
+shift $((OPTIND - 1))
 
 # Kernel
 write /proc/sys/kernel/perf_cpu_time_max_percent 5

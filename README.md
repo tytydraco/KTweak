@@ -77,7 +77,7 @@ See RedHat: https://www.redhat.com/files/summit/session-assets/2018/Performance-
 ### kernel.sched_min_task_util_for_colocation: 35 --> 0
 This value determines when top-app tasks (which are of greater priority than background tasks) can be sched_boosted. Set this value to zero to allow top-app tasks to always be upmigrated if the sched_{up,down}migrate values are met.
 
-### kernel.sched_nr_migrate: 32 --> 16
+### kernel.sched_nr_migrate: 32 --> 8
 Reduce the maximum number of sched entities that can migrate in a single scheduling period. Reducing this value reduces realtime task latency at the cost of SCHED_OTHER throughput.
 
 ### kernel.sched_schedstats: 1 --> 0

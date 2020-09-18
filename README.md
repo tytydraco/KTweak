@@ -70,7 +70,7 @@ Set the minimum task scheduling period to 0.5ms. With kernel.sched_latency_ns se
 ### kernel.sched_wakeup_granularity_ns: 1000000 (1ms)
 Require tasks to be running for at least 1ms longer than the waiting task before preemption can happen. Reducing this value to 1ms reduces wakeup preemption latencies by up to 50% at a 50th percentile and around 10% for higher percentiles. Hackbench scores suffer if this value is reduced too low.
 
-### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 1000000 (1ms)
+### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 5000000 (5ms)
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.
 See RedHat: https://www.redhat.com/files/summit/session-assets/2018/Performance-analysis-and-tuning-of-Red-Hat-Enterprise-Linux-Part-1.pdf
 

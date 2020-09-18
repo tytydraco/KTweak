@@ -52,14 +52,8 @@ In order to remain genuine, I have commited to explaining each and every kernel 
 ### kernel.perf_cpu_time_max_percent: 25 --> 5
 This is the **maximum** CPU time long perf event processing can take as a percentage. If this percentage is exceeded (meaning perf event processing used too much CPU time), the polling rate is throttled. This is reduced from 25% to 5%. We can afford inaccuracies with perf events in exchange for more time that a foreground task can use.
 
-### kernel.sched_autogroup_enabled: 0 --> 1
-The Linux Kernel scheduler (CFS) distributes timeslices to each active task. For example, if the scheduling period is 10ms, and there are 5 tasks running, CFS will give each task 2ms of runtime for that scheduling cycle. However, this means that a SCHED_OTHER task may compete with a SCHED_FIFO task. Autogrouping groups task groups together during scheduling. For example, if the scheduling period is 10ms, and there are 6 SCHED_OTHER tasks running and 4 SCHED_FIFO tasks running, the SCHED_OTHER tasks will get 50% of the runtime and the SCHED_FIFO tasks will get the other 50%. For each task group, the timeslices are once again divided. The SCHED_FIFO tasks will get 12.5% runtime and the SCHED_OTHER tasks will get ~8.3% runtime. This usually offers better interactivity on multithreaded platforms.
-See scheduling priority documentation: https://man7.org/linux/man-pages/man7/sched.7.html
-See autogrouping off: https://www.youtube.com/watch?v=uk70SeGA7pg
-See autogrouping on: https://www.youtube.com/watch?v=prxInRdaNfc
-
-### kernel.sched_enable_thread_grouping: 0 --> 1
-To my knowledge using the limited documentation of this tunable, this is basically autogrouping for thread groups.
+### kernel.sched_autogroup_enabled: 0
+This tunable was designed for older computers with only one or two cores, where video playback could often times become choppy due to the scheduler not meeting a deadline soon enough. Autogrouping mitigated the issue by giving a fair timeslice to both active and background processes. On Android, this can be detrimental and reduce the performance of foreground applications.
 
 ### kernel.sched_child_runs_first: 0 --> 1
 When forking a child process from the parent, execute the child process before the parent process. This usually shaves down some latency on task initializations, since most of the time the child process is doing some form of heavy lifting.

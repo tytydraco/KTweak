@@ -89,7 +89,6 @@ shift $((OPTIND - 1))
 # Kernel
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
 write /proc/sys/kernel/sched_autogroup_enabled 0
-write /proc/sys/kernel/sched_enable_thread_grouping 1
 write /proc/sys/kernel/sched_child_runs_first 1
 write /proc/sys/kernel/sched_tunable_scaling 0
 write /proc/sys/kernel/sched_latency_ns 5000000

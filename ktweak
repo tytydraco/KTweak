@@ -3,17 +3,17 @@
 
 # Log in red
 err() {
-	echo -e " \e[91m*\e[39m $@"
+	echo -e " \e[91m*\e[39m $*"
 }
 
 # Log in orange
 warn() {
-	echo -e " \e[93m*\e[39m $@"
+	echo -e " \e[93m*\e[39m $*"
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	echo -e " \e[92m*\e[39m $@"
+	echo -e " \e[92m*\e[39m $*"
 }
 
 # Safely write value to file
@@ -22,7 +22,8 @@ _write() {
 	[[ ! -f "$1" ]] && return 1
 
 	# Fetch the current key value
-	local curval=`cat "$1" 2> /dev/null`
+	local curval
+	curval="$(cat "$1" 2> /dev/null)"
 
 	# Bail out if value is already set
 	if [[ "$curval" == "$2" ]]
@@ -32,10 +33,7 @@ _write() {
 	fi
 
 	# Write the new value
-	echo "$2" > "$1" 2> /dev/null
-
-	# Bail out if write fails
-	if [[ $? -ne 0 ]]
+	if ! echo "$2" > "$1" 2> /dev/null
 	then
 		err "Failed to write $1: $curval → $2"
 		return 1
@@ -55,7 +53,7 @@ write() {
 }
 
 usage() {
-	echo -n "Usage: `basename $0` [OPTIONS]
+	echo -n "Usage: $(basename "$0") [OPTIONS]
 Options:
   -s			Synchronous mode
   -h			Show usage
@@ -63,7 +61,7 @@ Options:
 }
 
 # Check for root permissions
-if [[ `id -u` -ne 0 ]]
+if [[ "$(id -u)" -ne 0 ]]
 then
 	err "No root permissions. Exiting."
 	exit 1
@@ -121,7 +119,7 @@ fi
 # CPU
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
-	avail_govs=`cat "${cpu}scaling_available_governors"`
+	avail_govs="$(cat "${cpu}scaling_available_governors")"
 	if [[ "$avail_govs" == *"schedutil"* ]]
 	then
 		_write "${cpu}scaling_governor" schedutil
@@ -129,20 +127,20 @@ do
 		write "${cpu}schedutil/down_rate_limit_us" 5000
 		write "${cpu}schedutil/rate_limit_us" 5000
 		write "${cpu}schedutil/hispeed_load" 90
-		write "${cpu}schedutil/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
+		write "${cpu}schedutil/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
 	elif [[ "$avail_govs" == *"interactive"* ]]
 	then
 		_write "${cpu}scaling_governor" interactive
 		write "${cpu}interactive/min_sample_time" 5000
 		write "${cpu}interactive/go_hispeed_load" 90
-		write "${cpu}interactive/hispeed_freq" `cat "${cpu}cpuinfo_max_freq"`
+		write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
 	fi
 done
 
 # I/O
 for queue in /sys/block/*/queue/
 do
-	avail_scheds=`cat "${queue}scheduler"`
+	avail_scheds="$(cat "${queue}scheduler")"
 	for sched in cfq noop kyber bfq mq-deadline none
 	do
 		if [[ "$avail_scheds" == *"$sched"* ]]

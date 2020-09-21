@@ -91,7 +91,7 @@ fi
 
 
 # Log the date and time
-dbg "$(date)"
+dbg "Time of execution: $(date)"
 
 # Kernel
 write /proc/sys/kernel/perf_cpu_time_max_percent 5

@@ -3,17 +3,32 @@
 
 # Log in red
 err() {
-	echo -e " \e[91m*\e[39m $*"
+	if [[ -n "$SIMPLE_LOGGING" ]]
+	then
+		echo "ERROR $*"
+	else
+		echo -e " \e[91m*\e[39m $*"
+	fi
 }
 
 # Log in orange
 warn() {
-	echo -e " \e[93m*\e[39m $*"
+	if [[ -n "$SIMPLE_LOGGING" ]]
+	then
+		echo "WARNING $*"
+	else
+		echo -e " \e[93m*\e[39m $*"
+	fi
 }
 
 # Log in white and continue (unnecessary)
 dbg() {
-	echo -e " \e[92m*\e[39m $*"
+	if [[ -n "$SIMPLE_LOGGING" ]]
+	then
+		echo "DEBUG $*"
+	else
+		echo -e " \e[92m*\e[39m $*"
+	fi
 }
 
 # Safely write value to file
@@ -42,12 +57,38 @@ write() {
 	dbg "Successfully wrote $1: $curval → $2"
 }
 
+usage() {
+	echo -n "Usage: $(basename "$0") [OPTIONS]
+Options:
+  -p			Parsable logging
+  -h			Show usage
+"
+}
+
+while getopts ":ph" opt; do
+	case $opt in
+		p)
+			SIMPLE_LOGGING=1
+			;;
+		h)
+			usage
+			exit 0
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND - 1))
+
 # Check for root permissions
 if [[ "$(id -u)" -ne 0 ]]
 then
 	err "No root permissions. Exiting."
 	exit 1
 fi
+
 
 # Log the date and time
 dbg "$(date)"

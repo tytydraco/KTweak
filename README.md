@@ -116,9 +116,6 @@ By scheduling the last woken task first, we can increase cache locality since th
 ### TTWU Queue
 Allow the scheduler to place tasks on their origin CPU, increasing cache locality if the CPU is non-local (i.e. a cache hit would definitely have been missed).
 
-### HRTick
-Usually, the scheduler is interrupted once every 1/HZ milliseconds if no task directly interrupts it. This arises an issue where we rely on opportunism to keep scheduling latencies low. Enabling HRTick will schedule an hrtimer that is capable of interrupting the kernel more often than 1/HZ milliseconds, based on the current number of running tasks. In testing using schbench, latencies (and max latencies) were reduced to almost half of their original values.
-
 ### Governor Tweaks
 * {up_,down_}rate_limit_us / min_sample_time: 0 --> 5000: Only adjust frequencies once per scheduling cycle to reduce jitter or stutter caused by unrealistic frequency scaling.
 * hispeed_load / go_hispeed_load: 90: Jump to a higher frequency if we are approaching the end of the frequency list, where a task may begin to starve or begin to stutter.

@@ -17,7 +17,7 @@ dbg() {
 }
 
 # Safely write value to file
-_write() {
+write() {
 	# Bail out if file does not exist
 	[[ ! -f "$1" ]] && return 1
 
@@ -42,47 +42,12 @@ _write() {
 	dbg "Successfully wrote $1: $curval → $2"
 }
 
-# Background fork write function
-write() {
-	if [[ "$SYNC" -eq 1 ]]
-	then
-		_write "$@"
-	else
-		_write "$@" &
-	fi
-}
-
-usage() {
-	echo -n "Usage: $(basename "$0") [OPTIONS]
-Options:
-  -s			Synchronous mode
-  -h			Show usage
-"
-}
-
 # Check for root permissions
 if [[ "$(id -u)" -ne 0 ]]
 then
 	err "No root permissions. Exiting."
 	exit 1
 fi
-
-while getopts ":sh" opt; do
-	case $opt in
-		s)
-			SYNC=1
-			;;
-		h)
-			usage
-			exit 0
-			;;
-		*)
-			usage
-			exit 1
-			;;
-	esac
-done
-shift $((OPTIND - 1))
 
 # Log the date and time
 dbg "$(date)"
@@ -125,7 +90,7 @@ do
 	avail_govs="$(cat "${cpu}scaling_available_governors")"
 	if [[ "$avail_govs" == *"schedutil"* ]]
 	then
-		_write "${cpu}scaling_governor" schedutil
+		write "${cpu}scaling_governor" schedutil
 		write "${cpu}schedutil/up_rate_limit_us" 5000
 		write "${cpu}schedutil/down_rate_limit_us" 5000
 		write "${cpu}schedutil/rate_limit_us" 5000
@@ -133,7 +98,7 @@ do
 		write "${cpu}schedutil/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
 	elif [[ "$avail_govs" == *"interactive"* ]]
 	then
-		_write "${cpu}scaling_governor" interactive
+		write "${cpu}scaling_governor" interactive
 		write "${cpu}interactive/min_sample_time" 5000
 		write "${cpu}interactive/go_hispeed_load" 90
 		write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
@@ -148,7 +113,7 @@ do
 	do
 		if [[ "$avail_scheds" == *"$sched"* ]]
 		then
-			_write "${queue}scheduler" "$sched"
+			write "${queue}scheduler" "$sched"
 			break
 		fi
 	done

@@ -43,18 +43,18 @@ write() {
 	# Bail out if value is already set
 	if [[ "$curval" == "$2" ]]
 	then
-		warn "Skipping write $1: $curval → $2"
+		warn "$1: $curval → $2"
 		return 0
 	fi
 
 	# Write the new value
 	if ! echo "$2" > "$1" 2> /dev/null
 	then
-		err "Failed to write $1: $curval → $2"
+		err "$1: $curval → $2"
 		return 1
 	fi
 
-	dbg "Successfully wrote $1: $curval → $2"
+	dbg "$1: $curval → $2"
 }
 
 usage() {

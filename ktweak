@@ -92,9 +92,9 @@ write /proc/sys/kernel/perf_cpu_time_max_percent 5
 write /proc/sys/kernel/sched_autogroup_enabled 0
 write /proc/sys/kernel/sched_child_runs_first 1
 write /proc/sys/kernel/sched_tunable_scaling 0
-write /proc/sys/kernel/sched_latency_ns 1000000
-write /proc/sys/kernel/sched_min_granularity_ns 100000
-write /proc/sys/kernel/sched_wakeup_granularity_ns 100000
+write /proc/sys/kernel/sched_latency_ns 2000000
+write /proc/sys/kernel/sched_min_granularity_ns 200000
+write /proc/sys/kernel/sched_wakeup_granularity_ns 200000
 write /proc/sys/kernel/sched_migration_cost_ns 5000000
 write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 write /proc/sys/kernel/sched_nr_migrate 8

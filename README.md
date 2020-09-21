@@ -61,14 +61,14 @@ When forking a child process from the parent, execute the child process before t
 ### kernel.sched_tunable_scaling: 0
 This is more of a precaution than anything. Since the next few tunables will be scheduler timing related, we don't want the scheduler to scale our values for multiple CPUs, as we will be providing CPU-agnostic values.
 
-### kernel.sched_latency_ns: 1000000 (1ms)
-Set the default scheduling period to 1ms. Reduce the maximum scheduling period to reduce overall scheduling latency. With the addition of HRTick, we can gain timers that are accurate within microseconds. In testing, reducing this value to 1ms has been able to reduce even the minimum latencies by over half.
+### kernel.sched_latency_ns: 2000000 (2ms)
+Set the default scheduling period to 2ms. Reduce the maximum scheduling period to reduce overall scheduling latency. With the addition of HRTick, we can gain timers that are accurate within microseconds. In testing, reducing this value to 1ms has been able to reduce even the minimum latencies by over half.
 
-### kernel.sched_min_granularity_ns: 100000 (0.1ms)
-Set the minimum task scheduling period to 0.1ms. With kernel.sched_latency_ns set to 5ms, this means that 10 active tasks may execute within the 1ms scheduling period before we exceed it.
+### kernel.sched_min_granularity_ns: 200000 (0.2ms)
+Set the minimum task scheduling period to 0.2ms. With kernel.sched_latency_ns set to 2ms, this means that 10 active tasks may execute within the 2ms scheduling period before we exceed it.
 
-### kernel.sched_wakeup_granularity_ns: 1000000 (0.1ms)
-Require tasks to be running for at least 0.1ms longer than the waiting task before preemption can happen. Reducing this value to 0.1ms reduces wakeup preemption latencies by up to 50% at a 50th percentile and around 10% for higher percentiles. Hackbench scores suffer if this value is reduced too low.
+### kernel.sched_wakeup_granularity_ns: 2000000 (0.2ms)
+Require tasks to be running for at least 0.2ms longer than the waiting task before preemption can happen. Reducing this value to 0.2ms reduces wakeup preemption latencies by up to 50% at a 50th percentile and around 10% for higher percentiles. Hackbench scores suffer if this value is reduced too low.
 
 ### kernel.sched_migration_cost_ns: 500000 (0.5ms) --> 5000000 (5ms)
 Increase the time that a task is considered to be cache hot. According to RedHat, increasing this tunable reduces the number of task migrations. This should reduce time spent balancing tasks and increase per-task performance.

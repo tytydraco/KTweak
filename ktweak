@@ -48,7 +48,7 @@ write() {
 	fi
 
 	# Write the new value
-	if ! echo "$2" > "$1" 2> /dev/null
+	if ! echo "$2" > "$1" &> /dev/null
 	then
 		err "$1: $curval → $2"
 		return 1

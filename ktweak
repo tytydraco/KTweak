@@ -47,6 +47,9 @@ write() {
 		return 0
 	fi
 
+	# Make file writable
+	chmod +w "$1" 2> /dev/null
+
 	# Write the new value
 	if ! echo "$2" > "$1" 2> /dev/null
 	then

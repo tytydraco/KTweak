@@ -122,7 +122,6 @@ if [[ -f "/sys/kernel/debug/sched_features" ]]
 then
 	write /sys/kernel/debug/sched_features NEXT_BUDDY
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
-	write /sys/kernel/debug/sched_features HRTICK
 fi
 
 # CPU

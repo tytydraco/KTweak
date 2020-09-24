@@ -127,6 +127,13 @@ then
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
 fi
 
+# Schedtune boost
+if [[ -d "/dev/stune/" ]]
+then
+	write /dev/stune/top-app/schedtune.boost 15
+	write /dev/stune/top-app/schedtune.prefer_idle 1
+fi
+
 # CPU
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do

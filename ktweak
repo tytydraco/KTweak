@@ -149,6 +149,7 @@ do
 	elif [[ "$avail_govs" == *"interactive"* ]]
 	then
 		write "${cpu}scaling_governor" interactive
+		write "${cpu}interactive/timer_rate" 5000
 		write "${cpu}interactive/min_sample_time" 5000
 		write "${cpu}interactive/go_hispeed_load" 90
 		write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"

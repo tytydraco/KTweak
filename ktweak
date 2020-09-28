@@ -108,33 +108,34 @@ then
 	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi
 
+avail_govs="$(cat "${cpu}scaling_available_governors")"
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
-	avail_govs="$(cat "${cpu}scaling_available_governors")"
-	if [[ "$avail_govs" == *"schedutil"* ]]
-	then
-		write "${cpu}scaling_governor" schedutil
+	case "$avail_govs" in
+		*schedutil*)
+			write "${cpu}scaling_governor" schedutil
 
-		# Consider changing frequencies once per scheduling period
-		write "${cpu}schedutil/up_rate_limit_us" 5000
-		write "${cpu}schedutil/down_rate_limit_us" 5000
-		write "${cpu}schedutil/rate_limit_us" 5000
+			# Consider changing frequencies once per scheduling period
+			write "${cpu}schedutil/up_rate_limit_us" 5000
+			write "${cpu}schedutil/down_rate_limit_us" 5000
+			write "${cpu}schedutil/rate_limit_us" 5000
 
-		# Jump to max frequency at 90% load
-		write "${cpu}schedutil/hispeed_load" 90
-		write "${cpu}schedutil/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
-	elif [[ "$avail_govs" == *"interactive"* ]]
-	then
-		write "${cpu}scaling_governor" interactive
+			# Jump to max frequency at 90% load
+			write "${cpu}schedutil/hispeed_load" 90
+			write "${cpu}schedutil/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
+			;;
+		*interactive*)
+			write "${cpu}scaling_governor" interactive
 		
-		# Consider changing frequencies once per scheduling period
-		write "${cpu}interactive/timer_rate" 5000
-		write "${cpu}interactive/min_sample_time" 5000
+			# Consider changing frequencies once per scheduling period
+			write "${cpu}interactive/timer_rate" 5000
+			write "${cpu}interactive/min_sample_time" 5000
 
-		# Jump to max frequency at 90% load
-		write "${cpu}interactive/go_hispeed_load" 90
-		write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
-	fi
+			# Jump to max frequency at 90% load
+			write "${cpu}interactive/go_hispeed_load" 90
+			write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
+			;;
+	esac
 done
 
 for queue in /sys/block/*/queue/

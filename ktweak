@@ -30,7 +30,21 @@ fi
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
 
-# Limit max perf event processing time to 5% CPU usage
+# We need to execute this multiple times because
+# sched_downmirate must be less than sched_upmigrate, and
+# sched_upmigrate must be greater than sched_downmigrate
+for _ in $(seq 2)
+do
+	# Migrate tasks down at this much load
+	write /proc/sys/kernel/sched_downmigrate 80
+	write /proc/sys/kernel/sched_group_downmigrate 80
+
+	# Migrate tasks up at this much load
+	write /proc/sys/kernel/sched_upmigrate 80
+	write /proc/sys/kernel/sched_group_upmigrate 80
+done
+
+# Limit max perf event processing time to this much CPU usage
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
 
 # Do not group task groups automatically
@@ -105,9 +119,9 @@ then
 	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi
 
-avail_govs="$(cat "${cpu}scaling_available_governors")"
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
+	avail_govs="$(cat "${cpu}scaling_available_governors")"
 	case "$avail_govs" in
 		*schedutil*)
 			write "${cpu}scaling_governor" schedutil
@@ -137,6 +151,7 @@ done
 
 for queue in /sys/block/*/queue/
 do
+	# Choose the first governor available
 	avail_scheds="$(cat "${queue}scheduler")"
 	for sched in cfq noop kyber bfq mq-deadline none
 	do
@@ -147,8 +162,17 @@ do
 		fi
 	done
 
+	# Do not use I/O as a source of randomness
+	write "${queue}add_random" 0
+
 	# Disable I/O statistics accounting
 	write "${queue}iostats" 0
+
+	# Only attempt simple merges
+	write "${queue}nomerges" 1
+
+	# Force request completion on the origin CPU for maximum cache locality
+	write "${queue}rq_affinity" 2
 
 	# Reduce heuristic read-ahead in exchange for I/O latency
 	write "${queue}read_ahead_kb" 16

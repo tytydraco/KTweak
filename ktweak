@@ -94,9 +94,6 @@ then
 
 	# Schedule tasks on their origin CPU if possible
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
-
-	# Use a high resolution timer for the scheduler
-	write /sys/kernel/debug/sched_features HRTICK
 fi
 
 if [[ -d "/dev/stune/" ]]

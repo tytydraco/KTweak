@@ -154,6 +154,7 @@ done
 
 for queue in /sys/block/*/queue/
 do
+	# Choose the first governor available
 	avail_scheds="$(cat "${queue}scheduler")"
 	for sched in cfq noop kyber bfq mq-deadline none
 	do

@@ -30,7 +30,15 @@ fi
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
 
-# Limit max perf event processing time to 5% CPU usage
+# Migrate tasks down at this much load
+write /proc/sys/kernel/sched_downmigrate 80
+write /proc/sys/kernel/sched_group_downmigrate 80
+
+# Migrate tasks up at this much load
+write /proc/sys/kernel/sched_upmigrate 80
+write /proc/sys/kernel/sched_group_upmigrate 80
+
+# Limit max perf event processing time to this much CPU usage
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
 
 # Do not group task groups automatically

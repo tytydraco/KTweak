@@ -122,9 +122,9 @@ then
 	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi
 
-avail_govs="$(cat "${cpu}scaling_available_governors")"
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
+	avail_govs="$(cat "${cpu}scaling_available_governors")"
 	case "$avail_govs" in
 		*schedutil*)
 			write "${cpu}scaling_governor" schedutil

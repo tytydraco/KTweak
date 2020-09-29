@@ -62,8 +62,8 @@ write /proc/sys/kernel/sched_latency_ns 2000000
 # Schedule 10 tasks in the guarenteed sched period
 write /proc/sys/kernel/sched_min_granularity_ns 200000
 
-# Require preeptive tasks to surpass 1/10th of a sched period in vmruntime
-write /proc/sys/kernel/sched_wakeup_granularity_ns 200000
+# Require preeptive tasks to surpass half of a sched period in vmruntime
+write /proc/sys/kernel/sched_wakeup_granularity_ns 1000000
 
 # Reduce the frequency of task migrations
 write /proc/sys/kernel/sched_migration_cost_ns 5000000

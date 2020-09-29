@@ -30,13 +30,19 @@ fi
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
 
-# Migrate tasks down at this much load
-write /proc/sys/kernel/sched_downmigrate 80
-write /proc/sys/kernel/sched_group_downmigrate 80
+# We need to execute this multiple times because
+# sched_downmirate must be less than sched_upmigrate, and
+# sched_upmigrate must be greater than sched_downmigrate
+for _ in $(seq 2)
+do
+	# Migrate tasks down at this much load
+	write /proc/sys/kernel/sched_downmigrate 80
+	write /proc/sys/kernel/sched_group_downmigrate 80
 
-# Migrate tasks up at this much load
-write /proc/sys/kernel/sched_upmigrate 80
-write /proc/sys/kernel/sched_group_upmigrate 80
+	# Migrate tasks up at this much load
+	write /proc/sys/kernel/sched_upmigrate 80
+	write /proc/sys/kernel/sched_group_upmigrate 80
+done
 
 # Limit max perf event processing time to this much CPU usage
 write /proc/sys/kernel/perf_cpu_time_max_percent 5

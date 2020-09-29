@@ -101,6 +101,15 @@ write /proc/sys/vm/swappiness 100
 # Allow more inodes and dentries to be cached
 write /proc/sys/vm/vfs_cache_pressure 60
 
+# Enable Explicit Congestion Control
+write /proc/sys/net/ipv4/tcp_ecn 1
+
+# Enable fast socket open for receiver and sender
+write /proc/sys/net/ipv4/tcp_fastopen 3
+
+# Disable SYN cookies
+write /proc/sys/net/ipv4/tcp_syncookies 0
+
 if [[ -f "/sys/kernel/debug/sched_features" ]]
 then
 	# Consider scheduling tasks that are eager to run

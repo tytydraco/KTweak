@@ -21,7 +21,8 @@ Unlike other "kernel optimizers", KTweak is:
 * Non-intrusive and completely systemless
 
 # Benchmarks
-The following benchmarks were performed on a OnePlus 7 Pro running the stock kernel provided by the OEM on Android 10.
+The following benchmarks were performed on a OnePlus 7 Pro running the stock kernel provided by the OEM on Android 10. **KTweak sacrifices throughput for latency**, since latency correlates to UI / UX smoothness. This explains the slight regression with the scheduler throughput.
+
 
 ### Scheduler latency via `schbench` (lower is better)
 - Stock:
@@ -35,14 +36,18 @@ The following benchmarks were performed on a OnePlus 7 Pro running the stock ker
 min=0, max=73600`
 
 - KTweak:
-`50.0th: 2532
-75.0th: 11248
-90.0th: 22560
-95.0th: 29984
-*99.0th: 39232
-99.5th: 42560
-99.9th: 49088
-min=0, max=63731`
+`50.0th: 1054
+75.0th: 1790
+90.0th: 2628
+95.0th: 3836
+*99.0th: 8880
+99.5th: 11472
+99.9th: 18080
+min=0, max=32781`
+
+### Synthmark Latencymark (lower is better)
+- Stock: 10 / 12
+- KTweak: 4 / 4
 
 ### Scheduler throughput via `perf bench sched messaging` (lower is better)
 - Stock: 0.331 seconds
@@ -51,8 +56,6 @@ min=0, max=63731`
 ### Scheduler throughput via `perf bench sched pipe` (lower is better)
 - Stock: 16.159 seconds
 - KTweak: 18.599 seconds
-
-KTweak sacrifices throughput for latency, since latency correlates to UI / UX smoothness. This explains the slight regression with the scheduler throughput.
 
 # The Tweaks
 Head over to the [script itself](ktweak) to learn what everything does. It is documented in the comments.

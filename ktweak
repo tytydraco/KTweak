@@ -121,9 +121,6 @@ fi
 
 if [[ -d "/dev/stune/" ]]
 then
-	# Artificially inflate top-app task load
-	write /dev/stune/top-app/schedtune.boost 10
-
 	# Prefer to schedule top-app tasks on idle CPUs
 	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi

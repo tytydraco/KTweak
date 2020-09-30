@@ -177,9 +177,6 @@ do
 	# Only attempt simple merges
 	write "${queue}nomerges" 1
 
-	# Force request completion on the origin CPU for maximum cache locality
-	write "${queue}rq_affinity" 2
-
 	# Reduce heuristic read-ahead in exchange for I/O latency
 	write "${queue}read_ahead_kb" 16
 

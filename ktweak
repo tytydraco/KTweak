@@ -53,9 +53,6 @@ write /proc/sys/kernel/perf_cpu_time_max_percent 5
 # Do not group task groups automatically
 write /proc/sys/kernel/sched_autogroup_enabled 0
 
-# Execute child process before parent after fork
-write /proc/sys/kernel/sched_child_runs_first 1
-
 # Preliminary requirement for the following values
 write /proc/sys/kernel/sched_tunable_scaling 0
 

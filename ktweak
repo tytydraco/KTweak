@@ -197,9 +197,6 @@ do
 	# Disable I/O statistics accounting
 	write "$queue/iostats" 0
 
-	# Only attempt simple merges
-	write "$queue/nomerges" 1
-
 	# Reduce heuristic read-ahead in exchange for I/O latency
 	write "$queue/read_ahead_kb" 16
 

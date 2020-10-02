@@ -4,6 +4,12 @@
 # Maximum unsigned integer size in C
 UINT_MAX="4294967295"
 
+# Duration in nnaoseconds of one scheduling period
+SCHED_PERIOD="$((2 * 1000 * 1000))"
+
+# How many tasks should we have at a maximum in one scheduling period
+SCHED_TASKS="10"
+
 write() {
 	# Bail out if file does not exist
 	[[ ! -f "$1" ]] && return 1
@@ -60,13 +66,13 @@ write /proc/sys/kernel/sched_autogroup_enabled 0
 write /proc/sys/kernel/sched_tunable_scaling 0
 
 # Reduce the maximum scheduling period for lower latency
-write /proc/sys/kernel/sched_latency_ns 2000000
+write /proc/sys/kernel/sched_latency_ns "$SCHED_PERIOD"
 
 # Schedule 10 tasks in the guarenteed sched period
-write /proc/sys/kernel/sched_min_granularity_ns 200000
+write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS))"
 
 # Require preeptive tasks to surpass half of a sched period in vmruntime
-write /proc/sys/kernel/sched_wakeup_granularity_ns 1000000
+write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 2))"
 
 # Reduce the frequency of task migrations
 write /proc/sys/kernel/sched_migration_cost_ns 5000000

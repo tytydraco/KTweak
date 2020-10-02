@@ -129,10 +129,10 @@ then
 fi
 
 # Loop over each CPU in the system
-for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
+for cpu in /sys/devices/system/cpu/cpu*/cpufreq
 do
 	# Fetch the available governors from the CPU
-	avail_govs="$(cat "${cpu}scaling_available_governors")"
+	avail_govs="$(cat "$cpu/scaling_available_governors")"
 
 	# Attempt to set the governor in this order
 	for governor in schedutil interactive
@@ -140,7 +140,7 @@ do
 		# Once a matching governor is found, set it and break for this CPU
 		if [[ "$avail_govs" == *"$governor"* ]]
 		then
-			write "${cpu}scaling_governor" "$governor"
+			write "$cpu/scaling_governor" "$governor"
 			break
 		fi
 	done
@@ -171,33 +171,33 @@ do
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
-for queue in /sys/block/*/queue/
+for queue in /sys/block/*/queue
 do
 	# Choose the first governor available
-	avail_scheds="$(cat "${queue}scheduler")"
+	avail_scheds="$(cat "$queue/scheduler")"
 	for sched in cfq noop kyber bfq mq-deadline none
 	do
 		if [[ "$avail_scheds" == *"$sched"* ]]
 		then
-			write "${queue}scheduler" "$sched"
+			write "$queue/scheduler" "$sched"
 			break
 		fi
 	done
 
 	# Do not use I/O as a source of randomness
-	write "${queue}add_random" 0
+	write "$queue/add_random" 0
 
 	# Disable I/O statistics accounting
-	write "${queue}iostats" 0
+	write "$queue/iostats" 0
 
 	# Only attempt simple merges
-	write "${queue}nomerges" 1
+	write "$queue/nomerges" 1
 
 	# Reduce heuristic read-ahead in exchange for I/O latency
-	write "${queue}read_ahead_kb" 16
+	write "$queue/read_ahead_kb" 16
 
 	# Reduce the maximum number of I/O requests in exchange for latency
-	write "${queue}nr_requests" 64
+	write "$queue/nr_requests" 64
 done
 
 # Always return success, even if the last write fails

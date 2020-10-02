@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Written by Draco (tytydraco @ GitHub)
 
+# Maximum unsigned integer size in C
+UINT_MAX="4294967295"
+
 write() {
 	# Bail out if file does not exist
 	[[ ! -f "$1" ]] && return 1
@@ -125,34 +128,47 @@ then
 	write /dev/stune/top-app/schedtune.prefer_idle 1
 fi
 
+# Loop over each CPU in the system
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq/
 do
+	# Fetch the available governors from the CPU
 	avail_govs="$(cat "${cpu}scaling_available_governors")"
-	case "$avail_govs" in
-		*schedutil*)
-			write "${cpu}scaling_governor" schedutil
 
-			# Consider changing frequencies once per scheduling period
-			write "${cpu}schedutil/up_rate_limit_us" 5000
-			write "${cpu}schedutil/down_rate_limit_us" 5000
-			write "${cpu}schedutil/rate_limit_us" 5000
+	# Attempt to set the governor in this order
+	for governor in schedutil interactive
+	do
+		# Once a matching governor is found, set it and break for this CPU
+		if [[ "$avail_govs" == *"$governor"* ]]
+		then
+			write "${cpu}scaling_governor" "$governor"
+			break
+		fi
+	done
+done
 
-			# Jump to max frequency at 90% load
-			write "${cpu}schedutil/hispeed_load" 90
-			write "${cpu}schedutil/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
-			;;
-		*interactive*)
-			write "${cpu}scaling_governor" interactive
-		
-			# Consider changing frequencies once per scheduling period
-			write "${cpu}interactive/timer_rate" 5000
-			write "${cpu}interactive/min_sample_time" 5000
+# Apply governor specific tunables for schedutil
+find /sys/devices/system/cpu/ -name schedutil -type d | while IFS= read -r governor
+do
+	# Consider changing frequencies once per scheduling period
+	write "$governor/up_rate_limit_us" 5000
+	write "$governor/down_rate_limit_us" 5000
+	write "$governor/rate_limit_us" 5000
 
-			# Jump to max frequency at 90% load
-			write "${cpu}interactive/go_hispeed_load" 90
-			write "${cpu}interactive/hispeed_freq" "$(cat "${cpu}cpuinfo_max_freq")"
-			;;
-	esac
+	# Jump to max frequency at 90% load
+	write "$governor/hispeed_load" 90
+	write "$governor/hispeed_freq" "$UINT_MAX"
+done
+
+# Apply governor specific tunables for interactive
+find /sys/devices/system/cpu/ -name interactive -type d | while IFS= read -r governor
+do
+	# Consider changing frequencies once per scheduling period
+	write "$governor/timer_rate" 5000
+	write "$governor/min_sample_time" 5000
+
+	# Jump to max frequency at 90% load
+	write "$governor/go_hispeed_load" 90
+	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
 for queue in /sys/block/*/queue/

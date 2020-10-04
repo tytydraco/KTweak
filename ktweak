@@ -38,6 +38,7 @@ fi
 
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
+echo "Branch: dev"
 
 # Sync to data in the rare case a device crashes
 sync

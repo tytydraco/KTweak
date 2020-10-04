@@ -141,10 +141,6 @@ do
 	# Fetch the available governors from the CPU
 	avail_govs="$(cat "$cpu/scaling_available_governors")"
 
-	# Stretch CPU bounds
-	write "$cpu/scaling_max_freq" "$(cat "$cpu/cpuinfo_max_freq")"
-	write "$cpu/scaling_min_freq" "$(cat "$cpu/cpuinfo_min_freq")"
-
 	# Attempt to set the governor in this order
 	for governor in schedutil interactive
 	do

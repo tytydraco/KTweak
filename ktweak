@@ -72,7 +72,7 @@ write /proc/sys/kernel/sched_tunable_scaling 0
 # Reduce the maximum scheduling period for lower latency
 write /proc/sys/kernel/sched_latency_ns "$SCHED_PERIOD"
 
-# Schedule 10 tasks in the guarenteed sched period
+# Schedule this ratio of tasks in the guarenteed sched period
 write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS))"
 
 # Require preeptive tasks to surpass half of a sched period in vmruntime
@@ -167,7 +167,7 @@ do
 	write "$governor/down_rate_limit_us" "$((SCHED_PERIOD / 1000))"
 	write "$governor/rate_limit_us" "$((SCHED_PERIOD / 1000))"
 
-	# Jump to max frequency at 90% load
+	# Jump to hispeed frequency at this load percentage
 	write "$governor/hispeed_load" 90
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
@@ -179,7 +179,7 @@ do
 	write "$governor/timer_rate" "$((SCHED_PERIOD / 1000))"
 	write "$governor/min_sample_time" "$((SCHED_PERIOD / 1000))"
 
-	# Jump to max frequency at 90% load
+	# Jump to hispeed frequency at this load percentage
 	write "$governor/go_hispeed_load" 90
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done

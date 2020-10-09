@@ -167,7 +167,7 @@ find /sys/devices/system/cpu/ -name schedutil -type d | while IFS= read -r gover
 do
 	# Consider changing frequencies once per scheduling period
 	write "$governor/up_rate_limit_us" "$((SCHED_PERIOD / 1000))"
-	write "$governor/down_rate_limit_us" "$((SCHED_PERIOD / 1000))"
+	write "$governor/down_rate_limit_us" "$((4 * SCHED_PERIOD / 1000))"
 	write "$governor/rate_limit_us" "$((SCHED_PERIOD / 1000))"
 
 	# Jump to hispeed frequency at this load percentage

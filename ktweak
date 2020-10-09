@@ -90,6 +90,9 @@ write /proc/sys/kernel/sched_nr_migrate 8
 # Disable scheduler statistics to reduce overhead
 write /proc/sys/kernel/sched_schedstats 0
 
+# Disable unnecessary printk logging
+write /proc/sys/kernel/printk_devkmsg off
+
 # Start non-blocking writeback later
 write /proc/sys/vm/dirty_background_ratio 10
 

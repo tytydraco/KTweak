@@ -35,6 +35,8 @@ then
 	exit 1
 fi
 
+# Detect if we are running on Android
+grep -q android /proc/cmdline && ANDROID=true
 
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
@@ -46,7 +48,7 @@ sync
 # We need to execute this multiple times because
 # sched_downmirate must be less than sched_upmigrate, and
 # sched_upmigrate must be greater than sched_downmigrate
-for _ in $(seq 2)
+[[ "$ANDROID" == true ]] && for _ in $(seq 2)
 do
 	# Migrate tasks down at this much load
 	write /proc/sys/kernel/sched_downmigrate "80 80"
@@ -82,7 +84,7 @@ write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 2))"
 write /proc/sys/kernel/sched_migration_cost_ns 5000000
 
 # Always allow sched boosting on top-app tasks
-write /proc/sys/kernel/sched_min_task_util_for_colocation 0
+[[ "$ANDROID" == true ]] && write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 
 # Improve real time latencies by reducing the scheduler migration time
 write /proc/sys/kernel/sched_nr_migrate 8
@@ -135,7 +137,7 @@ then
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
 fi
 
-if [[ -d "/dev/stune/" ]]
+[[ "$ANDROID" == true ]] && if [[ -d "/dev/stune/" ]]
 then
 	# Prefer to schedule top-app tasks on idle CPUs
 	write /dev/stune/top-app/schedtune.prefer_idle 1

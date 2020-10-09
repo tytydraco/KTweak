@@ -5,7 +5,7 @@
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$((4 * 1000 * 1000))"
+SCHED_PERIOD="$((1 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
 SCHED_TASKS="10"

@@ -8,7 +8,7 @@ UINT_MAX="4294967295"
 SCHED_PERIOD="$((1 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
-SCHED_TASKS="10"
+SCHED_TASKS="8"
 
 write() {
 	# Bail out if file does not exist
@@ -51,19 +51,22 @@ sync
 [[ "$ANDROID" == true ]] && for _ in $(seq 2)
 do
 	# Migrate tasks down at this much load
-	write /proc/sys/kernel/sched_downmigrate "80 80"
-	write /proc/sys/kernel/sched_group_downmigrate 80
+	write /proc/sys/kernel/sched_downmigrate "70 70"
+	write /proc/sys/kernel/sched_group_downmigrate 70
 
 	# Migrate tasks up at this much load
-	write /proc/sys/kernel/sched_upmigrate "80 80"
-	write /proc/sys/kernel/sched_group_upmigrate 80
+	write /proc/sys/kernel/sched_upmigrate "70 70"
+	write /proc/sys/kernel/sched_group_upmigrate 70
 done
 
 # Limit max perf event processing time to this much CPU usage
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
 
-# Do not group task groups automatically
-write /proc/sys/kernel/sched_autogroup_enabled 0
+# Group tasks for less stutter but less throughput
+write /proc/sys/kernel/sched_autogroup_enabled 1
+
+# Execute child process before parent after fork
+write /proc/sys/kernel/sched_child_runs_first 1
 
 # Execute child process before parent after fork
 write /proc/sys/kernel/sched_child_runs_first 1

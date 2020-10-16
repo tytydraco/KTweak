@@ -8,7 +8,6 @@ No. Well, yes. However, a "kernel optimizer" is a poor way to put it. KTweak per
 * [MAGNETAR](https://github.com/Magisk-Modules-Grave/MAGNETAR) also uses closed source, compiled binaries. I'd love to say more about this, but I can't even find out what the module even does.
 * [FDE.AI](https://forum.xda-developers.com/apps/magisk/beta-feradroid-engine-v0-19-ultimate-t3284421) also uses closed source, compiled binaries with a paid variant.
 * [LKT](https://github.com/Magisk-Modules-Grave/legendary_kernel_tweaks/blob/master/common/system.prop) sets random nonsensical build.props that don't even exist.
-* [NUKED](https://forum.xda-developers.com/apps/magisk/module-tool-atteryerformancerivacy-t4131715) is yet another closed source, compiled binary. It makes a lot of claims that it cannot back up. Under further investigation, it was discovered that the binaries are heavily obfuscated.
 * [ZeetaTweaks](https://t.me/zeetaaprojbot) is a clone of KTweak with the values changed. As of the V11 zip, it disables essential system services, deletes files permanently from /data/data, kills perfd (which is the userspace boosting daemon), disables SELinux, disables fsync, and various other detrimental changes.
 
 # What's different about KTweak?

@@ -8,7 +8,7 @@ UINT_MAX="4294967295"
 SCHED_PERIOD="$((1 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
-SCHED_TASKS="10"
+SCHED_TASKS="8"
 
 write() {
 	# Bail out if file does not exist

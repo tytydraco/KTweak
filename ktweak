@@ -51,12 +51,12 @@ sync
 [[ "$ANDROID" == true ]] && for _ in $(seq 2)
 do
 	# Migrate tasks down at this much load
-	write /proc/sys/kernel/sched_downmigrate "80 80"
-	write /proc/sys/kernel/sched_group_downmigrate 80
+	write /proc/sys/kernel/sched_downmigrate "70 70"
+	write /proc/sys/kernel/sched_group_downmigrate 70
 
 	# Migrate tasks up at this much load
-	write /proc/sys/kernel/sched_upmigrate "80 80"
-	write /proc/sys/kernel/sched_group_upmigrate 80
+	write /proc/sys/kernel/sched_upmigrate "70 70"
+	write /proc/sys/kernel/sched_group_upmigrate 70
 done
 
 # Limit max perf event processing time to this much CPU usage

@@ -140,15 +140,6 @@ then
 	write /sys/kernel/debug/sched_features HRTICK
 fi
 
-[[ "$ANDROID" == true ]] && if [[ -d "/dev/stune/" ]]
-then
-	# Prefer to schedule top-app tasks on idle CPUs
-	write /dev/stune/top-app/schedtune.prefer_idle 1
-
-	# Mark top-app as boosted, find high-performing CPUs
-	write /dev/stune/top-app/schedtune.boost 1
-fi
-
 # Loop over each CPU in the system
 for cpu in /sys/devices/system/cpu/cpu*/cpufreq
 do

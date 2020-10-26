@@ -45,20 +45,6 @@ echo "Branch: master"
 # Sync to data in the rare case a device crashes
 sync
 
-# We need to execute this multiple times because
-# sched_downmirate must be less than sched_upmigrate, and
-# sched_upmigrate must be greater than sched_downmigrate
-[[ "$ANDROID" == true ]] && for _ in $(seq 2)
-do
-	# Migrate tasks down at this much load
-	write /proc/sys/kernel/sched_downmigrate "70 70"
-	write /proc/sys/kernel/sched_group_downmigrate 70
-
-	# Migrate tasks up at this much load
-	write /proc/sys/kernel/sched_upmigrate "70 70"
-	write /proc/sys/kernel/sched_group_upmigrate 70
-done
-
 # Limit max perf event processing time to this much CPU usage
 write /proc/sys/kernel/perf_cpu_time_max_percent 5
 
@@ -116,8 +102,8 @@ write /proc/sys/vm/stat_interval 10
 # Swap to the swap device at a fair rate
 write /proc/sys/vm/swappiness 100
 
-# Allow more inodes and dentries to be cached
-write /proc/sys/vm/vfs_cache_pressure 60
+# Prioritize page cache over simple file structure nodes
+write /proc/sys/vm/vfs_cache_pressure 200
 
 # Enable Explicit Congestion Control
 write /proc/sys/net/ipv4/tcp_ecn 1
@@ -209,7 +195,7 @@ do
 	write "$queue/iostats" 0
 
 	# Reduce heuristic read-ahead in exchange for I/O latency
-	write "$queue/read_ahead_kb" 16
+	write "$queue/read_ahead_kb" 128
 
 	# Reduce the maximum number of I/O requests in exchange for latency
 	write "$queue/nr_requests" 64

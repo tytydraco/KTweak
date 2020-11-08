@@ -40,7 +40,7 @@ grep -q android /proc/cmdline && ANDROID=true
 
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
-echo "Branch: dev"
+echo "Branch: hrtick"
 
 # Sync to data in the rare case a device crashes
 sync

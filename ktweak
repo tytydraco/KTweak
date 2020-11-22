@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Written by Draco (tytydraco @ GitHub)
 
+# The name of the current branch for logging purposes
+BRANCH="balance"
+
 # Maximum unsigned integer size in C
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$((1 * 1000 * 1000))"
+SCHED_PERIOD="$((4 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
 SCHED_TASKS="8"
@@ -40,7 +43,7 @@ grep -q android /proc/cmdline && ANDROID=true
 
 # Log the date and time for records sake
 echo "Time of execution: $(date)"
-echo "Branch: hrtick"
+echo "Branch: $BRANCH"
 
 # Sync to data in the rare case a device crashes
 sync
@@ -73,7 +76,7 @@ write /proc/sys/kernel/sched_migration_cost_ns 5000000
 [[ "$ANDROID" == true ]] && write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 
 # Improve real time latencies by reducing the scheduler migration time
-write /proc/sys/kernel/sched_nr_migrate 8
+write /proc/sys/kernel/sched_nr_migrate 32
 
 # Disable scheduler statistics to reduce overhead
 write /proc/sys/kernel/sched_schedstats 0
@@ -102,8 +105,8 @@ write /proc/sys/vm/stat_interval 10
 # Swap to the swap device at a fair rate
 write /proc/sys/vm/swappiness 100
 
-# Prioritize page cache over simple file structure nodes
-write /proc/sys/vm/vfs_cache_pressure 200
+# Fairly prioritize page cache and file structures
+write /proc/sys/vm/vfs_cache_pressure 100
 
 # Enable Explicit Congestion Control
 write /proc/sys/net/ipv4/tcp_ecn 1
@@ -121,15 +124,12 @@ then
 
 	# Schedule tasks on their origin CPU if possible
 	write /sys/kernel/debug/sched_features TTWU_QUEUE
-
-	# Use a high resolution timer for the scheduler
-	write /sys/kernel/debug/sched_features HRTICK
 fi
 
 [[ "$ANDROID" == true ]] && if [[ -d "/dev/stune/" ]]
 then
-	# Prefer to schedule top-app tasks on idle CPUs
-	write /dev/stune/top-app/schedtune.prefer_idle 1
+	# We are not concerned with prioritizing latency
+	write /dev/stune/top-app/schedtune.prefer_idle 0
 
 	# Mark top-app as boosted, find high-performing CPUs
 	write /dev/stune/top-app/schedtune.boost 1

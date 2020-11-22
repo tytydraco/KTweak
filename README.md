@@ -59,9 +59,6 @@ min=0, max=32781`
 # The Tweaks
 Head over to the [script itself](ktweak) to learn what everything does. It is documented in the comments.
 
-# Other Notes
-You should know that on Android devices, KTweak applies after init finishes + Android mounts + 120 seconds in order to prevent Android's init from overwriting any values.
-
 # Contact
 You can find me on telegram at @tytydraco.
 Feel free to email me at tylernij@gmail.com.

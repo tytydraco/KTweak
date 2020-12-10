@@ -11,7 +11,7 @@ UINT_MAX="4294967295"
 SCHED_PERIOD="$((1 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
-SCHED_TASKS="10"
+SCHED_TASKS="16"
 
 write() {
 	# Bail out if file does not exist
@@ -76,7 +76,7 @@ write /proc/sys/kernel/sched_migration_cost_ns 5000000
 [[ "$ANDROID" == true ]] && write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 
 # Improve real time latencies by reducing the scheduler migration time
-write /proc/sys/kernel/sched_nr_migrate 4
+write /proc/sys/kernel/sched_nr_migrate 2
 
 # Disable scheduler statistics to reduce overhead
 write /proc/sys/kernel/sched_schedstats 0

@@ -6,7 +6,7 @@ After=syslog.target network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/ktweak
+ExecStart=/usr/bin/ktweak
 Restart=on-failure
 RestartSec=10
 KillMode=process

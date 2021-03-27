@@ -2,16 +2,16 @@
 # Written by Draco (tytydraco @ GitHub)
 
 # The name of the current branch for logging purposes
-BRANCH="balance"
+BRANCH="budget"
 
 # Maximum unsigned integer size in C
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$((4 * 1000 * 1000))"
+SCHED_PERIOD="$((5 * 1000 * 1000))"
 
 # How many tasks should we have at a maximum in one scheduling period
-SCHED_TASKS="8"
+SCHED_TASKS="5"
 
 write() {
 	# Bail out if file does not exist
@@ -49,13 +49,13 @@ echo "Branch: $BRANCH"
 sync
 
 # Limit max perf event processing time to this much CPU usage
-write /proc/sys/kernel/perf_cpu_time_max_percent 5
+write /proc/sys/kernel/perf_cpu_time_max_percent 2
 
 # Group tasks for less stutter but less throughput
 write /proc/sys/kernel/sched_autogroup_enabled 1
 
 # Execute child process before parent after fork
-write /proc/sys/kernel/sched_child_runs_first 1
+write /proc/sys/kernel/sched_child_runs_first 0
 
 # Preliminary requirement for the following values
 write /proc/sys/kernel/sched_tunable_scaling 0
@@ -75,8 +75,8 @@ write /proc/sys/kernel/sched_migration_cost_ns 5000000
 # Always allow sched boosting on top-app tasks
 [[ "$ANDROID" == true ]] && write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 
-# Improve real time latencies by reducing the scheduler migration time
-write /proc/sys/kernel/sched_nr_migrate 32
+# Give up some latency to give the CPU a break
+write /proc/sys/kernel/sched_nr_migrate 256
 
 # Disable scheduler statistics to reduce overhead
 write /proc/sys/kernel/sched_schedstats 0
@@ -84,17 +84,17 @@ write /proc/sys/kernel/sched_schedstats 0
 # Disable unnecessary printk logging
 write /proc/sys/kernel/printk_devkmsg off
 
-# Start non-blocking writeback later
-write /proc/sys/vm/dirty_background_ratio 10
+# Budget devices are low-ram devices, don't let this build up
+write /proc/sys/vm/dirty_background_ratio 2
 
-# Start blocking writeback later
-write /proc/sys/vm/dirty_ratio 30
+# Flush completely when this much of the device is fulled
+write /proc/sys/vm/dirty_ratio 5
 
-# Require dirty memory to stay in memory for longer
-write /proc/sys/vm/dirty_expire_centisecs 3000
+# Expire dirty memory very early
+write /proc/sys/vm/dirty_expire_centisecs 500
 
-# Run the dirty memory flusher threads less often
-write /proc/sys/vm/dirty_writeback_centisecs 3000
+# Run the dirty memory flusher threads more often
+write /proc/sys/vm/dirty_writeback_centisecs 500
 
 # Disable read-ahead for swap devices
 write /proc/sys/vm/page-cluster 0
@@ -122,8 +122,8 @@ then
 	# Consider scheduling tasks that are eager to run
 	write /sys/kernel/debug/sched_features NEXT_BUDDY
 
-	# Schedule tasks on their origin CPU if possible
-	write /sys/kernel/debug/sched_features TTWU_QUEUE
+	# Prioritize power over cache hits
+	write /sys/kernel/debug/sched_features NO_TTWU_QUEUE
 fi
 
 [[ "$ANDROID" == true ]] && if [[ -d "/dev/stune/" ]]
@@ -131,8 +131,8 @@ then
 	# We are not concerned with prioritizing latency
 	write /dev/stune/top-app/schedtune.prefer_idle 0
 
-	# Mark top-app as boosted, find high-performing CPUs
-	write /dev/stune/top-app/schedtune.boost 1
+	# Don't boost foreground tasks, let the governor handle it
+	write /dev/stune/top-app/schedtune.boost 0
 fi
 
 # Loop over each CPU in the system
@@ -158,11 +158,11 @@ find /sys/devices/system/cpu/ -name schedutil -type d | while IFS= read -r gover
 do
 	# Consider changing frequencies once per scheduling period
 	write "$governor/up_rate_limit_us" "$((SCHED_PERIOD / 1000))"
-	write "$governor/down_rate_limit_us" "$((4 * SCHED_PERIOD / 1000))"
+	write "$governor/down_rate_limit_us" "$((SCHED_PERIOD / 1000))"
 	write "$governor/rate_limit_us" "$((SCHED_PERIOD / 1000))"
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 90
+	write "$governor/hispeed_load" 99
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -174,7 +174,7 @@ do
 	write "$governor/min_sample_time" "$((SCHED_PERIOD / 1000))"
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 90
+	write "$governor/go_hispeed_load" 99
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -198,10 +198,10 @@ do
 	write "$queue/iostats" 0
 
 	# Reduce heuristic read-ahead in exchange for I/O latency
-	write "$queue/read_ahead_kb" 128
+	write "$queue/read_ahead_kb" 64
 
-	# Reduce the maximum number of I/O requests in exchange for latency
-	write "$queue/nr_requests" 64
+	# Increase maximum requests to reduce processing power
+	write "$queue/nr_requests" 512
 done
 
 # Always return success, even if the last write fails

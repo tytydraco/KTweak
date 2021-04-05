@@ -23,6 +23,6 @@ package() {
   chmod +x ktweak
   mkdir -p "$pkgdir/usr/bin/"
   mkdir -p "$pkgdir/etc/systemd/system/"
-  install -Dm644 ktweak "$pkgdir/usr/bin/ktweak"
+  install -Dm744 ktweak "$pkgdir/usr/bin/ktweak"
   install -Dm644 ktweak.service "$pkgdir/etc/systemd/system/ktweak.service"
 }

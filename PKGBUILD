@@ -5,11 +5,11 @@ pkgver=1.0.ac279a9
 pkgrel=1
 pkgdesc="KTweak - A no-nonsense kernel tweak script for Linux and Android systems, backed by evidence"
 arch=('any')
-url="https://github.com/frap129/KTweak.git"
+url="https://github.com/tytydraco/KTweak.git"
 license=('GPL3')
 depends=()
 makedepends=('git')
-source=("$pkgname"::'git+https://github.com/frap129/ktweak')
+source=("$pkgname"::'git+https://github.com/tytydraco/ktweak')
 md5sums=('SKIP')
 provides=(ktweak)
 

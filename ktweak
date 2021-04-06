@@ -162,7 +162,7 @@ do
 	write "$governor/rate_limit_us" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 85
+	write "$governor/hispeed_load" 95
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -174,7 +174,7 @@ do
 	write "$governor/min_sample_time" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 85
+	write "$governor/go_hispeed_load" 95
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 

@@ -8,10 +8,10 @@ BRANCH="latency"
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$((1 * 1000 * 1000) / 2)"
+SCHED_PERIOD="$(18 * 1000 * 1000)"
 
 # How many tasks should we have at a maximum in one scheduling period
-SCHED_TASKS="16"
+SCHED_TASKS="10"
 
 write() {
 	# Bail out if file does not exist
@@ -55,7 +55,7 @@ write /proc/sys/kernel/perf_cpu_time_max_percent 3
 write /proc/sys/kernel/sched_autogroup_enabled 1
 
 # Execute child process before parent after fork
-write /proc/sys/kernel/sched_child_runs_first 1
+write /proc/sys/kernel/sched_child_runs_first 0
 
 # Preliminary requirement for the following values
 write /proc/sys/kernel/sched_tunable_scaling 0
@@ -64,10 +64,10 @@ write /proc/sys/kernel/sched_tunable_scaling 0
 write /proc/sys/kernel/sched_latency_ns "$SCHED_PERIOD"
 
 # Schedule this ratio of tasks in the guarenteed sched period
-write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS))"
+write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS) - 300000)"
 
 # Require preeptive tasks to surpass half of a sched period in vmruntime
-write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 2))"
+write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 6))"
 
 # Reduce the frequency of task migrations
 write /proc/sys/kernel/sched_migration_cost_ns 5000000
@@ -76,7 +76,7 @@ write /proc/sys/kernel/sched_migration_cost_ns 5000000
 [[ "$ANDROID" == true ]] && write /proc/sys/kernel/sched_min_task_util_for_colocation 0
 
 # Improve real time latencies by reducing the scheduler migration time
-write /proc/sys/kernel/sched_nr_migrate 2
+write /proc/sys/kernel/sched_nr_migrate 4
 
 # Disable scheduler statistics to reduce overhead
 write /proc/sys/kernel/sched_schedstats 0
@@ -84,17 +84,45 @@ write /proc/sys/kernel/sched_schedstats 0
 # Disable unnecessary printk logging
 write /proc/sys/kernel/printk_devkmsg off
 
+write /proc/sys/kernel/panic 0
+
+write /proc/sys/kernel/panic_on_oops 1
+
+write /proc/sys/kernel/msgmni 2048
+
+write /proc/sys/kernel/msgmax 64000
+
+write /proc/sys/kernel/shmmax 268435456
+
+write /proc/sys/kernel/sem '500 512000 64 2048'
+
+# write /proc/sys/kernel/sched_features 24189
+
+write /proc/sys/kernel/hung_task_timeout_secs 0
+
+# write /proc/sys/kernel/sched_compat_yield 1
+
+# write /proc/sys/kernel/sched_shares_ratelimit 256000
+
+write /proc/sys/kernel/threads-max 5000
+
 # Start non-blocking writeback later
-write /proc/sys/vm/dirty_background_ratio 70
+write /proc/sys/vm/dirty_background_ratio 1
 
 # Start blocking writeback later
-write /proc/sys/vm/dirty_ratio 90
+write /proc/sys/vm/dirty_ratio 2
+
+write /proc/sys/vm/min_free_kbytes 4096
+
+write /proc/sys/vm/oom_kill_allocating_task 0
+
+write /proc/sys/vm/panic_on_oom 0
 
 # Require dirty memory to stay in memory for longer
-write /proc/sys/vm/dirty_expire_centisecs 500
+write /proc/sys/vm/dirty_expire_centisecs 1000
 
 # Run the dirty memory flusher threads less often
-write /proc/sys/vm/dirty_writeback_centisecs 500
+write /proc/sys/vm/dirty_writeback_centisecs 2000
 
 # Disable read-ahead for swap devices
 write /proc/sys/vm/page-cluster 0
@@ -106,7 +134,11 @@ write /proc/sys/vm/stat_interval 10
 write /proc/sys/vm/swappiness 100
 
 # Prioritize page cache over simple file structure nodes
-write /proc/sys/vm/vfs_cache_pressure 1
+write /proc/sys/vm/vfs_cache_pressure 200
+
+write /proc/sys/net/core/wmem_max 524288
+
+write /proc/sys/net/core/rmem_max 524288
 
 # Enable Explicit Congestion Control
 write /proc/sys/net/ipv4/tcp_ecn 1
@@ -116,6 +148,14 @@ write /proc/sys/net/ipv4/tcp_fastopen 3
 
 # Disable SYN cookies
 write /proc/sys/net/ipv4/tcp_syncookies 0
+
+# write /proc/sys/net/ipv4/tcp_tw_recycle 1
+
+write /proc/sys/net/ipv4/tcp_tw_reuse 1
+
+write /proc/sys/net/ipv4/tcp_wmem '6144 87380 524288'
+
+write /proc/sys/net/ipv4/tcp_rmem '6144 87380 524288'
 
 if [[ -f "/sys/kernel/debug/sched_features" ]]
 then
@@ -162,7 +202,7 @@ do
 	write "$governor/rate_limit_us" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 95
+	write "$governor/hispeed_load" 98
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -174,7 +214,7 @@ do
 	write "$governor/min_sample_time" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 95
+	write "$governor/go_hispeed_load" 98
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -202,6 +242,12 @@ do
 
 	# Reduce the maximum number of I/O requests in exchange for latency
 	write "$queue/nr_requests" 32
+
+ write "$queue/rotational" 0
+
+ write "$queue/nomerges" 0
+
+ write "$queue/max_sectors_kb" 128
 done
 
 # Always return success, even if the last write fails

@@ -243,11 +243,11 @@ do
 	# Reduce the maximum number of I/O requests in exchange for latency
 	write "$queue/nr_requests" 32
 
- write "$queue/rotational" 0
+        write "$queue/rotational" 0
 
- write "$queue/nomerges" 0
+        write "$queue/nomerges" 0
 
- write "$queue/max_sectors_kb" 128
+        write "$queue/max_sectors_kb" 128
 done
 
 # Always return success, even if the last write fails

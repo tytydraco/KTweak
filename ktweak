@@ -114,7 +114,7 @@ write /proc/sys/vm/dirty_ratio 2
 
 write /proc/sys/vm/min_free_kbytes 4096
 
-write /proc/sys/vm/oom_kill_allocating_task 0
+write /proc/sys/vm/oom_kill_allocating_task 1
 
 write /proc/sys/vm/panic_on_oom 0
 

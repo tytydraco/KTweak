@@ -118,6 +118,8 @@ write /proc/sys/vm/oom_kill_allocating_task 1
 
 write /proc/sys/vm/panic_on_oom 0
 
+write /proc/sys/vm/highmem_is_dirtyable 1
+
 # Require dirty memory to stay in memory for longer
 write /proc/sys/vm/dirty_expire_centisecs 1000
 
@@ -238,10 +240,12 @@ do
 	write "$queue/iostats" 0
 
 	# Reduce heuristic read-ahead in exchange for I/O latency
-	write "$queue/read_ahead_kb" 32
+	write "$queue/read_ahead_kb" 0
 
 	# Reduce the maximum number of I/O requests in exchange for latency
-	write "$queue/nr_requests" 32
+	write "$queue/nr_requests" 512
+
+	write "$queue/rq_affinity" 2
 
         write "$queue/rotational" 0
 

@@ -133,10 +133,10 @@ write /proc/sys/vm/page-cluster 0
 write /proc/sys/vm/stat_interval 10
 
 # Swap to the swap device at a fair rate
-write /proc/sys/vm/swappiness 100
+write /proc/sys/vm/swappiness 20
 
 # Prioritize page cache over simple file structure nodes
-write /proc/sys/vm/vfs_cache_pressure 200
+write /proc/sys/vm/vfs_cache_pressure 80
 
 write /proc/sys/net/core/wmem_max 524288
 
@@ -204,7 +204,7 @@ do
 	write "$governor/rate_limit_us" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 85
+	write "$governor/hispeed_load" 75
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -216,7 +216,7 @@ do
 	write "$governor/min_sample_time" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 85
+	write "$governor/go_hispeed_load" 75
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 

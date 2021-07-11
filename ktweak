@@ -8,7 +8,7 @@ BRANCH="latency"
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$(1 * 1000 * 1000)"
+SCHED_PERIOD="$(18 * 1000 * 1000)"
 
 # How many tasks should we have at a maximum in one scheduling period
 SCHED_TASKS="10"
@@ -64,10 +64,10 @@ write /proc/sys/kernel/sched_tunable_scaling 0
 write /proc/sys/kernel/sched_latency_ns "$SCHED_PERIOD"
 
 # Schedule this ratio of tasks in the guarenteed sched period
-write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS))"
+write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS) - 300000)"
 
 # Require preeptive tasks to surpass half of a sched period in vmruntime
-write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 2))"
+write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 6))"
 
 # Reduce the frequency of task migrations
 write /proc/sys/kernel/sched_migration_cost_ns 5000000
@@ -121,10 +121,10 @@ write /proc/sys/vm/panic_on_oom 0
 write /proc/sys/vm/highmem_is_dirtyable 1
 
 # Require dirty memory to stay in memory for longer
-write /proc/sys/vm/dirty_expire_centisecs 3000
+write /proc/sys/vm/dirty_expire_centisecs 1000
 
 # Run the dirty memory flusher threads less often
-write /proc/sys/vm/dirty_writeback_centisecs 3000
+write /proc/sys/vm/dirty_writeback_centisecs 2000
 
 # Disable read-ahead for swap devices
 write /proc/sys/vm/page-cluster 0
@@ -204,7 +204,7 @@ do
 	write "$governor/rate_limit_us" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 75
+	write "$governor/hispeed_load" 95
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -216,7 +216,7 @@ do
 	write "$governor/min_sample_time" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 75
+	write "$governor/go_hispeed_load" 95
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 

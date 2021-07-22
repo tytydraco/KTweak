@@ -121,10 +121,10 @@ write /proc/sys/vm/panic_on_oom 0
 write /proc/sys/vm/highmem_is_dirtyable 1
 
 # Require dirty memory to stay in memory for longer
-write /proc/sys/vm/dirty_expire_centisecs 1000
+write /proc/sys/vm/dirty_expire_centisecs 3000
 
 # Run the dirty memory flusher threads less often
-write /proc/sys/vm/dirty_writeback_centisecs 2000
+write /proc/sys/vm/dirty_writeback_centisecs 3000
 
 # Disable read-ahead for swap devices
 write /proc/sys/vm/page-cluster 0

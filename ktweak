@@ -8,7 +8,7 @@ BRANCH="latency"
 UINT_MAX="4294967295"
 
 # Duration in nanoseconds of one scheduling period
-SCHED_PERIOD="$(18 * 1000 * 1000)"
+SCHED_PERIOD="$(1 * 1000 * 1000)"
 
 # How many tasks should we have at a maximum in one scheduling period
 SCHED_TASKS="10"
@@ -64,10 +64,10 @@ write /proc/sys/kernel/sched_tunable_scaling 0
 write /proc/sys/kernel/sched_latency_ns "$SCHED_PERIOD"
 
 # Schedule this ratio of tasks in the guarenteed sched period
-write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS) - 300000)"
+write /proc/sys/kernel/sched_min_granularity_ns "$((SCHED_PERIOD / SCHED_TASKS))"
 
 # Require preeptive tasks to surpass half of a sched period in vmruntime
-write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 6))"
+write /proc/sys/kernel/sched_wakeup_granularity_ns "$((SCHED_PERIOD / 2))"
 
 # Reduce the frequency of task migrations
 write /proc/sys/kernel/sched_migration_cost_ns 5000000
@@ -184,7 +184,7 @@ do
 	avail_govs="$(cat "$cpu/scaling_available_governors")"
 
 	# Attempt to set the governor in this order
-	for governor in schedutil interactive
+	for governor in schedutil interactive hotplug
 	do
 		# Once a matching governor is found, set it and break for this CPU
 		if [[ "$avail_govs" == *"$governor"* ]]
@@ -204,7 +204,7 @@ do
 	write "$governor/rate_limit_us" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/hispeed_load" 95
+	write "$governor/hispeed_load" 75
 	write "$governor/hispeed_freq" "$UINT_MAX"
 done
 
@@ -216,8 +216,21 @@ do
 	write "$governor/min_sample_time" 0
 
 	# Jump to hispeed frequency at this load percentage
-	write "$governor/go_hispeed_load" 95
+	write "$governor/go_hispeed_load" 75
 	write "$governor/hispeed_freq" "$UINT_MAX"
+done
+
+# Apply governor specific tunables for hotplug
+find /sys/devices/system/cpu/ -name hotplug -type d | while IFS= read -r governor
+do
+	# Consider changing frequencies once per scheduling period
+	write "$governor/down_threshold" 20
+	write "$governor/sampling_rate" 50000
+
+	# Jump to hispeed frequency at this load percentage
+	write "$governor/up_threshold" 80
+	write "$governor/ignore_nice_load" 0
+	write "$governor/io_is_busy" 1
 done
 
 for queue in /sys/block/*/queue

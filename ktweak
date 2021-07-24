@@ -120,6 +120,12 @@ write /proc/sys/vm/panic_on_oom 0
 
 write /proc/sys/vm/highmem_is_dirtyable 1
 
+write /proc/sys/vm/extra_free_kbytes 51200
+
+write /sys/module/lowmemorykiller/parameters/adj '50,200,300,500,900,1500'
+
+write /sys/module/lowmemorykiller/parameters/minfree '18432,23040,27648,32256,36864,46080'
+
 # Require dirty memory to stay in memory for longer
 write /proc/sys/vm/dirty_expire_centisecs 3000
 

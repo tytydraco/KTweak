@@ -107,10 +107,10 @@ write /proc/sys/kernel/hung_task_timeout_secs 0
 write /proc/sys/kernel/threads-max 5000
 
 # Start non-blocking writeback later
-write /proc/sys/vm/dirty_background_ratio 1
+write /proc/sys/vm/dirty_background_ratio 3
 
 # Start blocking writeback later
-write /proc/sys/vm/dirty_ratio 2
+write /proc/sys/vm/dirty_ratio 30
 
 write /proc/sys/vm/min_free_kbytes 4096
 
@@ -228,7 +228,10 @@ do
 	write "$governor/sampling_rate" 50000
 
 	# Jump to hispeed frequency at this load percentage
+	write "$governor/down_differential" 10
 	write "$governor/up_threshold" 80
+	write "$governor/hotplug_in_sampling_periods" 2
+	write "$governor/hotplug_out_sampling_periods" 20
 	write "$governor/ignore_nice_load" 0
 	write "$governor/io_is_busy" 1
 done

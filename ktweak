@@ -54,7 +54,7 @@ write /proc/sys/kernel/perf_cpu_time_max_percent 2
 # Group tasks for less stutter but less throughput
 write /proc/sys/kernel/sched_autogroup_enabled 1
 
-# Execute child process before parent after fork
+# Process child-parent forks naturally
 write /proc/sys/kernel/sched_child_runs_first 0
 
 # Preliminary requirement for the following values

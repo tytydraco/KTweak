@@ -11,8 +11,10 @@ ui_print ""
 
 ui_print " * Fetching script from GitHub..."
 if command -v curl &> /dev/null
+then
 	curl -Lso "$SCRIPT_PATH" "$URL"
 elif command -v wget &> /dev/null
+then
 	wget -qO "$SCRIPT_PATH" "$URL"
 else
 	ui_print " ! Missing curl and wget, bailing..."

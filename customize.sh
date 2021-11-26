@@ -4,6 +4,8 @@ BRANCH="balance"
 URL="https://raw.githubusercontent.com/tytydraco/KTweak/$BRANCH/ktweak"
 SCRIPT_PATH="$MODPATH/system/bin/ktweak"
 
+mkdir -p "$MODPATH/system/bin"
+
 ui_print ""
 ui_print " --- KTweak Magisk Module ---"
 ui_print "     branch: $BRANCH         "

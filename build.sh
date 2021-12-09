@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 BRANCHES=(balance budget latency throughput)
+SCRIPT_PARENT_PATH="system/bin"
+SCRIPT_NAME="ktweak"
+SCRIPT_PATH="$SCRIPT_PARENT_PATH/$SCRIPT_NAME"
 
+mkdir -p "$SCRIPT_PARENT_PATH"
 rm -rf KTweak-MM*.zip
 
 for branch in ${BRANCHES[@]}
@@ -11,10 +15,12 @@ do
 	HASH="$(git rev-parse HEAD)"
 	ZIP="KTweak-MM-${branch}_${TIMESTAMP}_${HASH}.zip"
 
-	cp customize.sh customize.sh.bk
-	sed -i "s/BRANCH=\"balance\"/BRANCH=\"$branch\"/" customize.sh
-	zip -0 -r -ll "$ZIP" META-INF/ customize.sh module.prop service.sh
-	mv customize.sh.bk customize.sh
+	echo " * Checking out script..."
+	git checkout "$branch" -- "$SCRIPT_NAME"
 
-	echo
+	echo " * Patching for Android..."
+	sed -i 's|!/usr/bin/env bash|!/system/bin/sh|g' "$SCRIPT_PATH"
+
+	echo " * Setting executable permissions..."
+	chmod +x "$SCRIPT_PATH"
 done

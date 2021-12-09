@@ -16,7 +16,7 @@ do
 	ZIP="KTweak-MM-${branch}_${TIMESTAMP}_${HASH}.zip"
 
 	echo " * Checking out script..."
-	git checkout "$branch" -- "$SCRIPT_NAME"
+	git show "$branch":"$SCRIPT_NAME" > "$SCRIPT_PATH"
 
 	echo " * Patching for Android..."
 	sed -i 's|!/usr/bin/env bash|!/system/bin/sh|g' "$SCRIPT_PATH"

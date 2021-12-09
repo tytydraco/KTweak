@@ -23,4 +23,8 @@ do
 
 	echo " * Setting executable permissions..."
 	chmod +x "$SCRIPT_PATH"
+
+	echo
 done
+
+echo " * Done!"

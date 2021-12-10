@@ -21,9 +21,6 @@ do
 	echo " * Patching for Android..."
 	sed -i 's|!/usr/bin/env bash|!/system/bin/sh|g' "$SCRIPT_PATH"
 
-	echo " * Setting executable permissions..."
-	chmod +x "$SCRIPT_PATH"
-
 	echo
 
 	zip -0 -r -ll "$ZIP" META-INF/ build.sh customize.sh module.prop service.sh system/

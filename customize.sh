@@ -4,6 +4,9 @@ SCRIPT_PARENT_PATH="system/bin"
 SCRIPT_NAME="ktweak"
 SCRIPT_PATH="$SCRIPT_PARENT_PATH/$SCRIPT_NAME"
 
+ui_print " * Setting executable permissions..."
+set_perm_recursive "$SCRIPT_PATH" root root 0777 0755
+
 ui_print " * Executing script immediately..."
 sh "$SCRIPT_PATH"
 

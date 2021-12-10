@@ -25,6 +25,8 @@ do
 	chmod +x "$SCRIPT_PATH"
 
 	echo
+
+	zip -0 -r -ll "$ZIP" META-INF/ build.sh customize.sh module.prop service.sh system/
 done
 
 echo " * Done!"

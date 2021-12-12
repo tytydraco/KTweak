@@ -1,6 +1,6 @@
 #!/system/bin/sh
 
-SCRIPT_PARENT_PATH="system/bin"
+SCRIPT_PARENT_PATH="$MODPATH/system/bin"
 SCRIPT_NAME="ktweak"
 SCRIPT_PATH="$SCRIPT_PARENT_PATH/$SCRIPT_NAME"
 
